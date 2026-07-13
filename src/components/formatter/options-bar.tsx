@@ -1,6 +1,6 @@
-import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
 
 export function OptionsBar() {
   return (
@@ -8,7 +8,7 @@ export function OptionsBar() {
       <Label className="text-muted-foreground">Options</Label>
 
       <div className="flex items-center gap-2">
-        <Checkbox id="capitalize-slides" />
+        <Switch id="capitalize-slides" />
         <Label htmlFor="capitalize-slides">
           Capitalize first letter of each slide
         </Label>
@@ -17,7 +17,7 @@ export function OptionsBar() {
       <Separator orientation="vertical" className="h-5" />
 
       <div className="flex items-center gap-2">
-        <Checkbox id="remove-punctuation" />
+        <Switch id="remove-punctuation" />
         <Label htmlFor="remove-punctuation">Remove punctuation</Label>
       </div>
     </div>
