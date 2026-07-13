@@ -7,6 +7,11 @@ import { ThemeToggle } from "./theme-toggle"
 export function FormatterHeader() {
   return (
     <header className="flex items-center gap-3 border-b px-4 py-3 sm:px-6">
+      <img
+        src="/xecu-logotype.png"
+        alt=""
+        className="h-8 w-auto rounded-sm"
+      />
       <h1 className="font-heading text-lg font-semibold">
         {strings.header.title}
       </h1>
