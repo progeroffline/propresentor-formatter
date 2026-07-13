@@ -94,8 +94,8 @@ export function ThemeProvider({
     return defaultTheme
   })
 
-  const [resolvedTheme, setResolvedTheme] = React.useState<ResolvedTheme>(
-    () => (theme === "system" ? getSystemTheme() : theme)
+  const [resolvedTheme, setResolvedTheme] = React.useState<ResolvedTheme>(() =>
+    theme === "system" ? getSystemTheme() : theme
   )
 
   const setTheme = React.useCallback(
