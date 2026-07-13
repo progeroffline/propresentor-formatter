@@ -1,3 +1,5 @@
+import { strings } from "@/i18n"
+
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
@@ -5,12 +7,12 @@ import { Switch } from "@/components/ui/switch"
 export function OptionsBar() {
   return (
     <div className="flex flex-wrap items-center gap-4 border-b px-4 py-3 sm:px-6">
-      <Label className="text-muted-foreground">Options</Label>
+      <Label className="text-muted-foreground">{strings.options.label}</Label>
 
       <div className="flex items-center gap-2">
         <Switch id="capitalize-slides" />
         <Label htmlFor="capitalize-slides">
-          Capitalize first letter of each slide
+          {strings.options.capitalizeSlides}
         </Label>
       </div>
 
@@ -18,7 +20,9 @@ export function OptionsBar() {
 
       <div className="flex items-center gap-2">
         <Switch id="remove-punctuation" />
-        <Label htmlFor="remove-punctuation">Remove punctuation</Label>
+        <Label htmlFor="remove-punctuation">
+          {strings.options.removePunctuation}
+        </Label>
       </div>
     </div>
   )

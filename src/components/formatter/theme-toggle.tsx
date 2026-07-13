@@ -1,5 +1,7 @@
 import { Moon, Sun } from "lucide-react"
 
+import { strings } from "@/i18n"
+
 import { useTheme } from "@/components/theme-provider"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,7 +27,9 @@ export function ThemeToggle() {
           </Button>
         }
       />
-      <TooltipContent>{isDark ? "Dark theme" : "Light theme"}</TooltipContent>
+      <TooltipContent>
+        {isDark ? strings.header.theme.dark : strings.header.theme.light}
+      </TooltipContent>
     </Tooltip>
   )
 }
