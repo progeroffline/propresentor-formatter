@@ -1,5 +1,3 @@
-import { toast } from "sonner"
-
 import { strings } from "@/i18n"
 
 import { Badge } from "@/components/ui/badge"
@@ -21,24 +19,30 @@ import {
 
 import { SectionBadges } from "./section-badges"
 
-export function OutputPanel() {
+export function OutputPanel({
+  value,
+  slideCount,
+  sections,
+  onCopy,
+}: {
+  value: string
+  slideCount: number
+  sections: string[]
+  onCopy: () => void
+}) {
   return (
     <Card className="flex min-h-0 flex-col">
       <CardHeader className="flex-row items-center justify-between">
         <CardTitle>{strings.output.title}</CardTitle>
         <CardAction className="flex items-center gap-2">
           <Badge variant="outline" className="font-mono">
-            {strings.output.slideCount}
+            {strings.output.slideCount(slideCount)}
           </Badge>
 
           <Tooltip>
             <TooltipTrigger
               render={
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => toast.success(strings.output.copiedToast)}
-                >
+                <Button variant="outline" size="sm" onClick={onCopy}>
                   {strings.output.copy}
                 </Button>
               }
@@ -54,14 +58,19 @@ export function OutputPanel() {
       </CardHeader>
 
       <CardContent className="flex min-h-0 flex-1 flex-col gap-3">
-        <SectionBadges
-          label={strings.output.sectionsLabel}
-          sections={strings.output.sections}
-        />
+        {sections.length > 0 && (
+          <SectionBadges label={strings.output.sectionsLabel} sections={sections} />
+        )}
 
         <ScrollArea className="min-h-0 flex-1 rounded-2xl border bg-input/30">
-          <pre className="p-4 font-mono text-sm whitespace-pre-wrap">
-            {strings.output.placeholder}
+          <pre
+            className={
+              value
+                ? "p-4 font-mono text-sm whitespace-pre-wrap"
+                : "p-4 font-mono text-sm whitespace-pre-wrap text-muted-foreground"
+            }
+          >
+            {value || strings.output.emptyState}
           </pre>
         </ScrollArea>
       </CardContent>

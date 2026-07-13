@@ -1,5 +1,7 @@
 import type { AppStrings } from "../types"
 
+import { pluralizeRu } from "./pluralize-ru"
+
 const SONG_PLACEHOLDER = `Я спасён от огня (Алексей Заханеко)
 
 Куплет 1
@@ -58,13 +60,13 @@ export const ru: AppStrings = {
   },
   output: {
     title: "Вывод — готово для ProPresenter",
-    slideCount: "12 слайдов",
+    slideCount: (count) =>
+      `${count} ${pluralizeRu(count, "слайд", "слайда", "слайдов")}`,
     copy: "Копировать",
     copyTooltip: "Скопировать результат",
     copiedToast: "Скопировано в буфер обмена",
     sectionsLabel: "Разделы:",
-    sections: ["Куплет 1", "Припев", "Куплет 2", "Припев"],
-    placeholder: SONG_PLACEHOLDER,
+    emptyState: "Здесь появится результат форматирования",
   },
   footer: {
     status: "Готово",

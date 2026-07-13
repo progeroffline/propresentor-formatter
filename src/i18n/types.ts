@@ -22,13 +22,12 @@ export interface AppStrings {
   }
   output: {
     title: string
-    slideCount: string
+    slideCount: (count: number) => string
     copy: string
     copyTooltip: string
     copiedToast: string
     sectionsLabel: string
-    sections: string[]
-    placeholder: string
+    emptyState: string
   }
   footer: {
     status: string

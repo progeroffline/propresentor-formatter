@@ -16,7 +16,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-export function InputPanel() {
+export function InputPanel({
+  value,
+  onValueChange,
+  onClear,
+  onFormat,
+}: {
+  value: string
+  onValueChange: (value: string) => void
+  onClear: () => void
+  onFormat: () => void
+}) {
   return (
     <Card className="flex min-h-0 flex-col">
       <CardHeader className="flex-row items-center justify-between">
@@ -25,7 +35,7 @@ export function InputPanel() {
           <Tooltip>
             <TooltipTrigger
               render={
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={onClear}>
                   {strings.input.clear}
                 </Button>
               }
@@ -36,7 +46,7 @@ export function InputPanel() {
           <Tooltip>
             <TooltipTrigger
               render={
-                <Button variant="default" size="sm">
+                <Button variant="default" size="sm" onClick={onFormat}>
                   {strings.input.format}
                 </Button>
               }
@@ -52,6 +62,8 @@ export function InputPanel() {
 
       <CardContent className="min-h-0 flex-1">
         <Textarea
+          value={value}
+          onChange={(event) => onValueChange(event.target.value)}
           placeholder={strings.input.placeholder}
           className="h-full font-mono"
         />

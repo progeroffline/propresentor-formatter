@@ -5,17 +5,35 @@ import { OptionsBar } from "@/components/formatter/options-bar"
 import { OutputPanel } from "@/components/formatter/output-panel"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { useLyricsFormatter } from "@/hooks/use-lyrics-formatter"
 
 export function App() {
+  const formatter = useLyricsFormatter()
+
   return (
     <TooltipProvider>
       <div className="flex min-h-svh flex-col bg-background">
         <FormatterHeader />
-        <OptionsBar />
+        <OptionsBar
+          capitalizeSlides={formatter.capitalizeSlides}
+          onCapitalizeSlidesChange={formatter.setCapitalizeSlides}
+          removePunctuation={formatter.removePunctuation}
+          onRemovePunctuationChange={formatter.setRemovePunctuation}
+        />
 
         <main className="grid flex-1 grid-cols-1 gap-4 overflow-hidden p-4 sm:px-6 lg:grid-cols-2">
-          <InputPanel />
-          <OutputPanel />
+          <InputPanel
+            value={formatter.inputText}
+            onValueChange={formatter.setInputText}
+            onClear={formatter.clear}
+            onFormat={formatter.format}
+          />
+          <OutputPanel
+            value={formatter.outputText}
+            slideCount={formatter.slideCount}
+            sections={formatter.sections}
+            onCopy={formatter.copy}
+          />
         </main>
 
         <FormatterFooter />
