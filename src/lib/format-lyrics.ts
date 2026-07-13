@@ -50,7 +50,10 @@ function normalizeHeaderCandidate(line: string): string {
   return text
     .trim()
     .toLowerCase()
-    .replace(/[-–—:]+$/, "")
+    // Drop a trailing repeat marker like "Припев: х2" or "Chorus x2" —
+    // it means "repeat this section", not a numbered variant.
+    .replace(/[\s:,.\-–—]*[xх×]\s*\d+$/i, "")
+    .replace(/[-–—:,.]+$/, "")
     .replace(/[-–—]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
@@ -62,17 +65,22 @@ function matchGroupHeader(line: string): string | null {
     return null
   }
 
-  const match = normalized.match(/^([a-zа-яё]+(?: [a-zа-яё]+)*?)(?: (\d+))?$/i)
+  // The section number can come either before the name ("1 Куплет") or
+  // after it ("Куплет 2" / "Verse 2"), since both orderings are common.
+  const match = normalized.match(
+    /^(?:(\d+)\s+)?([a-zа-яё]+(?: [a-zа-яё]+)*?)(?:\s+(\d+))?$/i
+  )
   if (!match) {
     return null
   }
 
-  const [, stem, number] = match
+  const [, leadingNumber, stem, trailingNumber] = match
   const canonical = STEM_TO_CANONICAL.get(stem)
   if (!canonical) {
     return null
   }
 
+  const number = leadingNumber ?? trailingNumber
   return number ? `${canonical} ${number}` : canonical
 }
 
