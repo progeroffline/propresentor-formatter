@@ -147,6 +147,16 @@ export function formatLyrics(input: string, options: FormatOptions): FormatResul
     }
   }
 
+  // A leading, unlabeled slide (typically the song name and author) gets a
+  // "Title: " prefix, but only when the song actually has other recognized
+  // sections later on — otherwise there's nothing to set it apart from.
+  const firstBlock = blocks[0]
+  const hasAnyHeader = blocks.some((block) => block.type === "header")
+  if (firstBlock && firstBlock.type === "slide" && hasAnyHeader) {
+    const [firstLine, ...rest] = firstBlock.lines
+    firstBlock.lines = [`Title: ${firstLine}`, ...rest]
+  }
+
   const sections = blocks
     .filter((block): block is { type: "header"; text: string } => block.type === "header")
     .map((block) => block.text)
