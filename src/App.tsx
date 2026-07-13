@@ -19,6 +19,8 @@ export function App() {
           onCapitalizeSlidesChange={formatter.setCapitalizeSlides}
           removePunctuation={formatter.removePunctuation}
           onRemovePunctuationChange={formatter.setRemovePunctuation}
+          removeLinks={formatter.removeLinks}
+          onRemoveLinksChange={formatter.setRemoveLinks}
         />
 
         <main className="grid flex-1 grid-cols-1 gap-4 overflow-hidden p-4 sm:px-6 lg:grid-cols-2">

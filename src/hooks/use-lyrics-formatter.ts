@@ -6,8 +6,9 @@ import { formatLyrics } from "@/lib/format-lyrics"
 
 export function useLyricsFormatter() {
   const [inputText, setInputText] = React.useState("")
-  const [capitalizeSlides, setCapitalizeSlides] = React.useState(false)
-  const [removePunctuation, setRemovePunctuation] = React.useState(false)
+  const [capitalizeSlides, setCapitalizeSlides] = React.useState(true)
+  const [removePunctuation, setRemovePunctuation] = React.useState(true)
+  const [removeLinks, setRemoveLinks] = React.useState(true)
 
   const [outputText, setOutputText] = React.useState("")
   const [sections, setSections] = React.useState<string[]>([])
@@ -17,11 +18,12 @@ export function useLyricsFormatter() {
     const result = formatLyrics(inputText, {
       capitalizeSlides,
       removePunctuation,
+      removeLinks,
     })
     setOutputText(result.output)
     setSections(result.sections)
     setSlideCount(result.slideCount)
-  }, [inputText, capitalizeSlides, removePunctuation])
+  }, [inputText, capitalizeSlides, removePunctuation, removeLinks])
 
   const clear = React.useCallback(() => {
     setInputText("")
@@ -68,6 +70,8 @@ export function useLyricsFormatter() {
     setCapitalizeSlides,
     removePunctuation,
     setRemovePunctuation,
+    removeLinks,
+    setRemoveLinks,
     outputText,
     sections,
     slideCount,

@@ -9,11 +9,15 @@ export function OptionsBar({
   onCapitalizeSlidesChange,
   removePunctuation,
   onRemovePunctuationChange,
+  removeLinks,
+  onRemoveLinksChange,
 }: {
   capitalizeSlides: boolean
   onCapitalizeSlidesChange: (value: boolean) => void
   removePunctuation: boolean
   onRemovePunctuationChange: (value: boolean) => void
+  removeLinks: boolean
+  onRemoveLinksChange: (value: boolean) => void
 }) {
   return (
     <div className="flex flex-wrap items-center gap-4 border-b px-4 py-3 sm:px-6">
@@ -41,6 +45,17 @@ export function OptionsBar({
         <Label htmlFor="remove-punctuation">
           {strings.options.removePunctuation}
         </Label>
+      </div>
+
+      <Separator orientation="vertical" className="h-5" />
+
+      <div className="flex items-center gap-2">
+        <Switch
+          id="remove-links"
+          checked={removeLinks}
+          onCheckedChange={onRemoveLinksChange}
+        />
+        <Label htmlFor="remove-links">{strings.options.removeLinks}</Label>
       </div>
     </div>
   )

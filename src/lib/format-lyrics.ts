@@ -1,6 +1,7 @@
 export interface FormatOptions {
   capitalizeSlides: boolean
   removePunctuation: boolean
+  removeLinks: boolean
 }
 
 export interface FormatResult {
@@ -40,6 +41,7 @@ for (const group of GROUP_DEFINITIONS) {
 }
 
 const PUNCTUATION_PATTERN = /[.,!?;:"'«»…()]/g
+const URL_PATTERN = /https?:\/\/\S+|www\.\S+/gi
 
 function normalizeHeaderCandidate(line: string): string {
   const bracketMatch = line.trim().match(/^\[(.+)\]$/)
@@ -100,6 +102,12 @@ function stripPunctuation(lines: string[]): string[] {
   )
 }
 
+function stripLinks(lines: string[]): string[] {
+  return lines
+    .map((line) => line.replace(URL_PATTERN, "").replace(/\s{2,}/g, " ").trim())
+    .filter((line) => line.length > 0)
+}
+
 type Block =
   | { type: "header"; text: string }
   | { type: "slide"; lines: string[] }
@@ -124,13 +132,18 @@ export function formatLyrics(input: string, options: FormatOptions): FormatResul
 
     if (slideLines.length > 0) {
       let lines = slideLines
+      if (options.removeLinks) {
+        lines = stripLinks(lines)
+      }
       if (options.removePunctuation) {
         lines = stripPunctuation(lines)
       }
       if (options.capitalizeSlides) {
         lines = capitalizeSlideText(lines)
       }
-      blocks.push({ type: "slide", lines })
+      if (lines.length > 0) {
+        blocks.push({ type: "slide", lines })
+      }
     }
   }
 

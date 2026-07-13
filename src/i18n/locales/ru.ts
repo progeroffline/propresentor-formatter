@@ -49,6 +49,7 @@ export const ru: AppStrings = {
     label: "Опции",
     capitalizeSlides: "Заглавная буква в начале каждого слайда",
     removePunctuation: "Убрать знаки препинания",
+    removeLinks: "Убрать ссылки",
   },
   input: {
     title: "Ввод",
