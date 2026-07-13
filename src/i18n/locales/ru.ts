@@ -68,7 +68,8 @@ export const ru: AppStrings = {
   },
   footer: {
     status: "Готово",
-    formatShortcut: "Формат",
-    copyShortcut: "Копировать",
+    contactText: "Если есть вопросы, пишите в Telegram",
+    contactHandle: "@paydevvv",
+    contactUrl: "https://t.me/paydevvv",
   },
 }

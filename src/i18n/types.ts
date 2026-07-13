@@ -32,7 +32,8 @@ export interface AppStrings {
   }
   footer: {
     status: string
-    formatShortcut: string
-    copyShortcut: string
+    contactText: string
+    contactHandle: string
+    contactUrl: string
   }
 }
