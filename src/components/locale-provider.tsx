@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
 
+import { usePersistedState } from "@/hooks/use-persisted-state"
 import { DEFAULT_LOCALE, LOCALES, type AppStrings, type Locale } from "@/i18n"
 
 type LocaleProviderProps = {
@@ -21,11 +22,7 @@ const LocaleProviderContext = React.createContext<
   LocaleProviderState | undefined
 >(undefined)
 
-function isLocale(value: string | null): value is Locale {
-  if (value === null) {
-    return false
-  }
-
+function isLocale(value: string): value is Locale {
   return LOCALE_VALUES.includes(value as Locale)
 }
 
@@ -35,40 +32,11 @@ export function LocaleProvider({
   storageKey = "locale",
   ...props
 }: LocaleProviderProps) {
-  const [locale, setLocaleState] = React.useState<Locale>(() => {
-    const storedLocale = localStorage.getItem(storageKey)
-    if (isLocale(storedLocale)) {
-      return storedLocale
-    }
-
-    return defaultLocale
-  })
-
-  const setLocale = React.useCallback(
-    (nextLocale: Locale) => {
-      localStorage.setItem(storageKey, nextLocale)
-      setLocaleState(nextLocale)
-    },
-    [storageKey]
+  const [locale, setLocale] = usePersistedState(
+    storageKey,
+    defaultLocale,
+    isLocale
   )
-
-  React.useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.storageArea !== localStorage || event.key !== storageKey) {
-        return
-      }
-
-      if (isLocale(event.newValue)) {
-        setLocaleState(event.newValue)
-        return
-      }
-
-      setLocaleState(defaultLocale)
-    }
-
-    window.addEventListener("storage", handleStorageChange)
-    return () => window.removeEventListener("storage", handleStorageChange)
-  }, [defaultLocale, storageKey])
 
   const value = React.useMemo(
     () => ({

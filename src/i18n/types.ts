@@ -27,6 +27,7 @@ export interface AppStrings {
     copy: string
     copyTooltip: string
     copiedToast: string
+    copyFailedToast: string
     sectionsLabel: string
     emptyState: string
   }

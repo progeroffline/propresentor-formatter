@@ -1,6 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
 
+import { usePersistedState } from "@/hooks/use-persisted-state"
+
 type Theme = "dark" | "light" | "system"
 type ResolvedTheme = "dark" | "light"
 
@@ -24,11 +26,7 @@ const ThemeProviderContext = React.createContext<
   ThemeProviderState | undefined
 >(undefined)
 
-function isTheme(value: string | null): value is Theme {
-  if (value === null) {
-    return false
-  }
-
+function isTheme(value: string): value is Theme {
   return THEME_VALUES.includes(value as Theme)
 }
 
@@ -91,28 +89,13 @@ export function ThemeProvider({
   disableTransitionOnChange = true,
   ...props
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = React.useState<Theme>(() => {
-    const storedTheme = localStorage.getItem(storageKey)
-    if (isTheme(storedTheme)) {
-      return storedTheme
-    }
-
-    return defaultTheme
-  })
+  const [theme, setTheme] = usePersistedState(storageKey, defaultTheme, isTheme)
 
   const systemTheme = React.useSyncExternalStore(
     subscribeToSystemTheme,
     getSystemTheme
   )
   const resolvedTheme = theme === "system" ? systemTheme : theme
-
-  const setTheme = React.useCallback(
-    (nextTheme: Theme) => {
-      localStorage.setItem(storageKey, nextTheme)
-      setThemeState(nextTheme)
-    },
-    [storageKey]
-  )
 
   React.useEffect(() => {
     const root = document.documentElement
@@ -146,19 +129,15 @@ export function ThemeProvider({
         return
       }
 
-      setThemeState((currentTheme) => {
-        const nextTheme =
-          currentTheme === "dark"
-            ? "light"
-            : currentTheme === "light"
-              ? "dark"
-              : getSystemTheme() === "dark"
-                ? "light"
-                : "dark"
-
-        localStorage.setItem(storageKey, nextTheme)
-        return nextTheme
-      })
+      setTheme((currentTheme) =>
+        currentTheme === "dark"
+          ? "light"
+          : currentTheme === "light"
+            ? "dark"
+            : getSystemTheme() === "dark"
+              ? "light"
+              : "dark"
+      )
     }
 
     window.addEventListener("keydown", handleKeyDown)
@@ -166,32 +145,7 @@ export function ThemeProvider({
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [storageKey])
-
-  React.useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.storageArea !== localStorage) {
-        return
-      }
-
-      if (event.key !== storageKey) {
-        return
-      }
-
-      if (isTheme(event.newValue)) {
-        setThemeState(event.newValue)
-        return
-      }
-
-      setThemeState(defaultTheme)
-    }
-
-    window.addEventListener("storage", handleStorageChange)
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange)
-    }
-  }, [defaultTheme, storageKey])
+  }, [setTheme])
 
   const value = React.useMemo(
     () => ({

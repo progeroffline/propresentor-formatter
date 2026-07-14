@@ -79,6 +79,7 @@ export const uk: AppStrings = {
     copy: "Копіювати",
     copyTooltip: "Скопіювати результат",
     copiedToast: "Скопійовано в буфер обміну",
+    copyFailedToast: "Не вдалося скопіювати в буфер обміну",
     sectionsLabel: "Розділи:",
     emptyState: "Тут з'явиться результат форматування",
   },

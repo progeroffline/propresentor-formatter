@@ -66,6 +66,7 @@ export const ru: AppStrings = {
     copy: "Копировать",
     copyTooltip: "Скопировать результат",
     copiedToast: "Скопировано в буфер обмена",
+    copyFailedToast: "Не удалось скопировать в буфер обмена",
     sectionsLabel: "Разделы:",
     emptyState: "Здесь появится результат форматирования",
   },

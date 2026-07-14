@@ -2,7 +2,9 @@ import * as React from "react"
 import { toast } from "sonner"
 
 import { useLocale } from "@/components/locale-provider"
-import { formatLyrics } from "@/lib/format-lyrics"
+import { formatLyrics, type FormatResult } from "@/lib/format-lyrics"
+
+const EMPTY_RESULT: FormatResult = { output: "", sections: [], slideCount: 0 }
 
 export function useLyricsFormatter() {
   const { strings } = useLocale()
@@ -11,36 +13,40 @@ export function useLyricsFormatter() {
   const [removePunctuation, setRemovePunctuation] = React.useState(true)
   const [removeLinks, setRemoveLinks] = React.useState(true)
 
-  const [outputText, setOutputText] = React.useState("")
-  const [sections, setSections] = React.useState<string[]>([])
-  const [slideCount, setSlideCount] = React.useState(0)
+  const [formatResult, setFormatResult] =
+    React.useState<FormatResult>(EMPTY_RESULT)
 
   const format = React.useCallback(() => {
-    const result = formatLyrics(inputText, {
-      capitalizeSlides,
-      removePunctuation,
-      removeLinks,
-    })
-    setOutputText(result.output)
-    setSections(result.sections)
-    setSlideCount(result.slideCount)
+    setFormatResult(
+      formatLyrics(inputText, { capitalizeSlides, removePunctuation, removeLinks })
+    )
   }, [inputText, capitalizeSlides, removePunctuation, removeLinks])
 
   const clear = React.useCallback(() => {
     setInputText("")
-    setOutputText("")
-    setSections([])
-    setSlideCount(0)
+    setFormatResult(EMPTY_RESULT)
   }, [])
 
   const copy = React.useCallback(() => {
-    if (!outputText) {
+    if (!formatResult.output) {
       return
     }
 
-    void navigator.clipboard.writeText(outputText)
-    toast.success(strings.output.copiedToast)
-  }, [outputText, strings])
+    navigator.clipboard.writeText(formatResult.output).then(
+      () => toast.success(strings.output.copiedToast),
+      () => toast.error(strings.output.copyFailedToast)
+    )
+  }, [formatResult.output, strings])
+
+  // Kept in refs so the listener is registered once per mount instead of on
+  // every keystroke (format/copy's identity changes with inputText/options).
+  const formatRef = React.useRef(format)
+  const copyRef = React.useRef(copy)
+
+  React.useEffect(() => {
+    formatRef.current = format
+    copyRef.current = copy
+  }, [format, copy])
 
   React.useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -50,19 +56,19 @@ export function useLyricsFormatter() {
 
       if (event.key === "Enter") {
         event.preventDefault()
-        format()
+        formatRef.current()
         return
       }
 
       if (event.shiftKey && event.key.toLowerCase() === "c") {
         event.preventDefault()
-        copy()
+        copyRef.current()
       }
     }
 
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [format, copy])
+  }, [])
 
   return {
     inputText,
@@ -73,9 +79,9 @@ export function useLyricsFormatter() {
     setRemovePunctuation,
     removeLinks,
     setRemoveLinks,
-    outputText,
-    sections,
-    slideCount,
+    outputText: formatResult.output,
+    sections: formatResult.sections,
+    slideCount: formatResult.slideCount,
     format,
     clear,
     copy,
