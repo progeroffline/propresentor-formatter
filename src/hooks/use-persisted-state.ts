@@ -15,17 +15,21 @@ export function usePersistedState<T extends string>(
     return stored !== null && isValid(stored) ? stored : defaultValue
   })
 
+  // Mirrors `value` so setValue can read the current value without relying
+  // on the setState functional-updater form, keeping localStorage.setItem
+  // (a side effect) out of the updater passed to setValueState.
+  const valueRef = React.useRef(value)
+
   const setValue = React.useCallback(
     (update: T | ((current: T) => T)) => {
-      setValueState((current) => {
-        const next =
-          typeof update === "function"
-            ? (update as (current: T) => T)(current)
-            : update
+      const next =
+        typeof update === "function"
+          ? (update as (current: T) => T)(valueRef.current)
+          : update
 
-        localStorage.setItem(storageKey, next)
-        return next
-      })
+      localStorage.setItem(storageKey, next)
+      valueRef.current = next
+      setValueState(next)
     },
     [storageKey]
   )
@@ -36,11 +40,13 @@ export function usePersistedState<T extends string>(
         return
       }
 
-      setValueState(
+      const next =
         event.newValue !== null && isValid(event.newValue)
           ? event.newValue
           : defaultValue
-      )
+
+      valueRef.current = next
+      setValueState(next)
     }
 
     window.addEventListener("storage", handleStorageChange)

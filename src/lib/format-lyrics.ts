@@ -90,9 +90,17 @@ function normalizeHeaderCandidate(line: string): string {
 // header with the rest of the line silently discarded.
 const CHORD_TOKEN_PATTERN =
   /^[a-g][#b]?(?:maj|min|sus2|sus4|sus|dim|aug|add\d?|m)?\d*(?:\/[a-g][#b]?(?:maj|min|sus2|sus4|sus|dim|aug|add\d?|m)?\d*)*\/?$/i
+const CHORD_MARKER_PATTERN = /[\d/]|maj|min|sus2|sus4|sus|dim|aug|add|m/i
 
 function looksLikeChordSuffix(tokens: string[]): boolean {
-  return tokens.length > 0 && tokens.every((token) => CHORD_TOKEN_PATTERN.test(token))
+  if (tokens.length === 0 || !tokens.every((token) => CHORD_TOKEN_PATTERN.test(token))) {
+    return false
+  }
+
+  // A bare note name like "a" (no digit, slash, or extension) is
+  // structurally valid but indistinguishable from an ordinary short word —
+  // require at least one token to carry an actual chord-like marker.
+  return tokens.some((token) => CHORD_MARKER_PATTERN.test(token))
 }
 
 const ROMAN_NUMERAL_VALUES: Record<string, number> = {

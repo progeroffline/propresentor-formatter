@@ -26,4 +26,21 @@ describe("Tag", () => {
       "Tag",
     ])
   })
+
+  it("still collapses to Tag when a chord progression follows the tag word", () => {
+    expect(
+      formatLyrics("Bridge Tag: Dm/Gm/C\nline 1", PLAIN).sections
+    ).toEqual(["Tag"])
+  })
+
+  it("keeps a number placed after the tag word, but drops one placed before it", () => {
+    expect(formatLyrics("Verse Tag 2\nline 1", PLAIN).sections).toEqual([
+      "Tag 2",
+    ])
+    // the "1" here numbers "Bridge", which is dropped along with the name -
+    // it does not carry over to the collapsed Tag group.
+    expect(formatLyrics("Bridge 1 Tag\nline 1", PLAIN).sections).toEqual([
+      "Tag",
+    ])
+  })
 })
