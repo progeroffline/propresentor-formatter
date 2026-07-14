@@ -54,8 +54,6 @@ Copying lyrics into ProPresenter usually means manually retyping section headers
 
 **Color-coded live preview** — every slide renders as its own card in the output panel, bordered in a color tied to its section (Verse in blue tones, Chorus in magenta/red, Bridge in purple, and so on — see the [full table](#supported-sections)), with the section name shown on each card. One glance tells you whether the song was split the way you expected.
 
-**Keyboard-first** — `Ctrl+Enter` to format, `Ctrl+Shift+C` to copy the result.
-
 **Light & dark theme**, and a Russian/Ukrainian interface (see [Privacy](#privacy) for why there's no server involved at all).
 
 ## Supported sections
@@ -100,7 +98,7 @@ npm install
 npm run dev
 ```
 
-Open the printed local URL, paste in some lyrics, and press `Ctrl+Enter`.
+Open the printed local URL, paste in some lyrics, and click **Format**.
 
 ## Available scripts
 
