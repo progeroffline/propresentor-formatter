@@ -35,7 +35,7 @@ Copying lyrics into ProPresenter usually means manually retyping section headers
 
 ## Features
 
-**Automatic section detection** — recognizes section headers (Verse, Chorus, Bridge, and more) written in English, Russian, or Ukrainian, in whatever form they show up:
+**Automatic section detection** — recognizes section headers (Verse, Chorus, Bridge, and more) written in English, Russian, Ukrainian, or German, in whatever form they show up:
 
 - Numbers before _or_ after the name — `Verse 2`, `2 Verse`, `Verse (2)`, `Verse II`
 - Repeat markers stripped as decoration, not content — `Chorus x2`, `Припев х2`
@@ -50,28 +50,32 @@ Copying lyrics into ProPresenter usually means manually retyping section headers
 - Strip punctuation (commas, quotes, ellipses, and more)
 - Strip `http(s)://` and `www.` links
 
-**Automatic title slide** — a leading, unlabeled block (typically the song title and author) is prefixed with `Title: ` in the copied output, but only once the song has at least one recognized section, so a plain block of text isn't mislabeled.
+**Output language** — pick which language section labels (and the `Title:` prefix) are written in: 🇬🇧 English, 🇷🇺 Russian, 🇺🇦 Ukrainian, or 🇩🇪 German — independent of which language the pasted lyrics happen to use for their own section names. Defaults to English. Paste a song with Russian headers and output German ones, or any other combination.
 
-**Color-coded live preview** — every slide renders as its own card in the output panel, bordered in a color tied to its section (Verse in blue tones, Chorus in magenta/red, Bridge in purple, and so on — see the [full table](#supported-sections)), with the section name shown on each card. One glance tells you whether the song was split the way you expected.
+**Automatic title slide** — a leading, unlabeled block (typically the song title and author) is prefixed with a translated `Title: ` in the copied output, but only once the song has at least one recognized section, so a plain block of text isn't mislabeled.
+
+**Color-coded live preview** — every slide renders as its own card in the output panel, bordered in a color tied to its section (Verse in blue tones, Chorus in magenta/red, Bridge in purple, and so on — see the [full table](#supported-sections)), with the section name shown on each card in the selected output language. One glance tells you whether the song was split the way you expected.
 
 **Light & dark theme**, and a Russian/Ukrainian interface (see [Privacy](#privacy) for why there's no server involved at all).
 
 ## Supported sections
 
-| Section    | English                      | Russian                                     | Ukrainian                          | Preview color                                        |
-| ---------- | ---------------------------- | ------------------------------------------- | ---------------------------------- | ---------------------------------------------------- |
-| Verse      | `Verse`                      | `Куплет`                                    | `Куплет`                           | ![#3B82C4](https://img.shields.io/badge/-%20-3B82C4) |
-| Chorus     | `Chorus`                     | `Припев`                                    | `Приспів`                          | ![#D63A6B](https://img.shields.io/badge/-%20-D63A6B) |
-| Bridge     | `Bridge`                     | `Бридж`, `Мост`                             | `Брідж`                            | ![#7B2FD6](https://img.shields.io/badge/-%20-7B2FD6) |
-| PreChorus  | `PreChorus`, `Pre Chorus`    | `Предприпев`, `Пред припев`, `Вставка`      | `Запев`, `Заспів`, `Перед приспів` | ![#B83A9E](https://img.shields.io/badge/-%20-B83A9E) |
-| Tag        | `Tag`, `Coda`, `Post Chorus` | `Тег`, `Кода`, `Постприпев`, `Пост приспів` | `Тег`, `Кода`                      | ![#D64A3B](https://img.shields.io/badge/-%20-D64A3B) |
-| Intro      | `Intro`                      | `Интро`                                     | `Інтро`                            | ![#B8A83B](https://img.shields.io/badge/-%20-B8A83B) |
-| Ending     | `Ending`                     | `Концовка`                                  | `Кінцівка`                         | ![#9C8A2F](https://img.shields.io/badge/-%20-9C8A2F) |
-| Outro      | `Outro`                      | `Аутро`                                     | `Аутро`                            | ![#8C9C3B](https://img.shields.io/badge/-%20-8C9C3B) |
-| Interlude  | `Interlude`, `Instrumental`  | `Проигрыш`, `Инструментал`                  | `Програш`                          | ![#4CAF6B](https://img.shields.io/badge/-%20-4CAF6B) |
-| Vamp       | `Vamp`                       | `Вамп`                                      | `Вамп`                             | ![#52B36F](https://img.shields.io/badge/-%20-52B36F) |
-| Turnaround | `Turnaround`                 | `Переход`                                   | `Перехід`                          | ![#5FBF7A](https://img.shields.io/badge/-%20-5FBF7A) |
-| Blank      | `Blank`                      | `Пусто`                                     | `Порожньо`                         | ![#000000](https://img.shields.io/badge/-%20-000000) |
+Recognized on input in any of these forms, in any of the four languages, no matter which one is currently selected as the output language. The output always uses one consistent spelling per language, shown in the **Output** column.
+
+| Section    | Recognized as (input)                                                                | Output: EN   | Output: RU     | Output: UK      | Output: DE   | Preview color                                        |
+| ---------- | -------------------------------------------------------------------------------------- | ------------- | --------------- | ----------------- | ------------- | ----------------------------------------------------- |
+| Verse      | `Verse`, `Куплет`, `Strophe`                                                          | `Verse`      | `Куплет`       | `Куплет`        | `Strophe`    | ![#3B82C4](https://img.shields.io/badge/-%20-3B82C4) |
+| Chorus     | `Chorus`, `Припев`, `Приспів`, `Refrain`                                              | `Chorus`     | `Припев`       | `Приспів`       | `Refrain`    | ![#D63A6B](https://img.shields.io/badge/-%20-D63A6B) |
+| Bridge     | `Bridge`, `Бридж`, `Брідж`, `Мост`                                                    | `Bridge`     | `Бридж`        | `Брідж`         | `Bridge`     | ![#7B2FD6](https://img.shields.io/badge/-%20-7B2FD6) |
+| PreChorus  | `PreChorus`, `Pre Chorus`, `Предприпев`, `Пред припев`, `Вставка`, `Запев`, `Заспів`, `Перед приспів` | `PreChorus`  | `Пред-припев`  | `Передприспів`  | `Pre-Chorus` | ![#B83A9E](https://img.shields.io/badge/-%20-B83A9E) |
+| Tag        | `Tag`, `Coda`, `Post Chorus`, `Тег`, `Кода`, `Постприпев`, `Пост приспів`             | `Tag`        | `Тег`          | `Тег`           | `Tag`        | ![#D64A3B](https://img.shields.io/badge/-%20-D64A3B) |
+| Intro      | `Intro`, `Интро`, `Інтро`                                                             | `Intro`      | `Интро`        | `Інтро`         | `Intro`      | ![#B8A83B](https://img.shields.io/badge/-%20-B8A83B) |
+| Ending     | `Ending`, `Концовка`, `Кінцівка`, `Schluss`                                           | `Ending`     | `Окончание`    | `Закінчення`    | `Ending`     | ![#9C8A2F](https://img.shields.io/badge/-%20-9C8A2F) |
+| Outro      | `Outro`, `Аутро`                                                                      | `Outro`      | `Концовка`     | `Аутро`         | `Outro`      | ![#8C9C3B](https://img.shields.io/badge/-%20-8C9C3B) |
+| Interlude  | `Interlude`, `Instrumental`, `Проигрыш`, `Инструментал`, `Програш`, `Zwischenspiel`   | `Interlude`  | `Проигрыш`     | `Програш`       | `Interlude`  | ![#4CAF6B](https://img.shields.io/badge/-%20-4CAF6B) |
+| Vamp       | `Vamp`, `Вамп`                                                                        | `Vamp`       | `Вамп`         | `Вемп`          | `Vamp`       | ![#52B36F](https://img.shields.io/badge/-%20-52B36F) |
+| Turnaround | `Turnaround`, `Переход`, `Перехід`                                                    | `Turnaround` | `Переход`      | `Перехід`       | `Turnaround` | ![#5FBF7A](https://img.shields.io/badge/-%20-5FBF7A) |
+| Blank      | `Blank`, `Пусто`, `Порожньо`, `Leer`                                                  | `Blank`      | `Пусто`        | `Порожньо`      | `Leer`       | ![#000000](https://img.shields.io/badge/-%20-000000) |
 
 Numbered sections (`Verse 2`, `Bridge 3`, ...) shade slightly differently within the same family so adjacent repeats of a section are easy to tell apart at a glance.
 
@@ -79,13 +83,12 @@ Matching is case-insensitive and works whether the header is written plainly on 
 
 ## Formatting options
 
-Three optional toggles, applied to every slide before it's split out:
-
-| Option                | What it does                                                                                                                                               |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Capitalize**        | Capitalizes the first letter of each slide (Cyrillic-aware — handles `і`/`ї`/`є`/`ґ` too).                                                                 |
-| **Strip punctuation** | Removes commas, periods, quotes, `«»`, ellipses, and similar marks; a line that becomes empty is dropped entirely rather than left as a stray blank slide. |
-| **Strip links**       | Removes `http(s)://` and `www.` URLs from a line; same drop-if-empty behavior.                                                                             |
+| Option               | What it does                                                                                                                                                 |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Capitalize**       | Capitalizes the first letter of each slide (Cyrillic-aware — handles `і`/`ї`/`є`/`ґ` too).                                                                    |
+| **Strip punctuation** | Removes commas, periods, quotes, `«»`, ellipses, and similar marks; a line that becomes empty is dropped entirely rather than left as a stray blank slide.     |
+| **Strip links**      | Removes `http(s)://` and `www.` URLs from a line; same drop-if-empty behavior.                                                                                  |
+| **Output language**  | Picks the language section labels (and `Title:`) are written in — 🇬🇧 English (default), 🇷🇺 Russian, 🇺🇦 Ukrainian, or 🇩🇪 German. See [Supported sections](#supported-sections). |
 
 ## Getting started
 
@@ -103,25 +106,39 @@ Open the printed local URL, paste in some lyrics, and click **Format**.
 ## Available scripts
 
 | Command             | Description                                    |
-| ------------------- | ---------------------------------------------- |
-| `npm run dev`       | Start the Vite dev server with hot reload      |
-| `npm run build`     | Type-check (`tsc -b`) and build for production |
-| `npm run preview`   | Preview the production build locally           |
-| `npm run test`      | Run the Vitest test suite                      |
-| `npm run lint`      | Run ESLint                                     |
-| `npm run typecheck` | Type-check the project without emitting output |
-| `npm run format`    | Format the codebase with Prettier              |
+| ------------------- | ------------------------------------------------ |
+| `npm run dev`       | Start the Vite dev server with hot reload         |
+| `npm run build`     | Type-check (`tsc -b`) and build for production   |
+| `npm run preview`   | Preview the production build locally             |
+| `npm run test`      | Run the Vitest test suite                        |
+| `npm run lint`      | Run ESLint                                       |
+| `npm run typecheck` | Type-check the project without emitting output   |
+| `npm run format`    | Format the codebase with Prettier                |
 
 ## Tech stack
 
 | Layer         | Choice                                                                                          |
-| ------------- | ----------------------------------------------------------------------------------------------- |
+| ------------- | -------------------------------------------------------------------------------------------------- |
 | Framework     | [React 19](https://react.dev/)                                                                  |
 | Language      | [TypeScript](https://www.typescriptlang.org/)                                                   |
-| Build tool    | [Vite](https://vite.dev/)                                                                       |
-| Styling       | [Tailwind CSS v4](https://tailwindcss.com/)                                                     |
+| Build tool    | [Vite](https://vite.dev/)                                                                        |
+| Styling       | [Tailwind CSS v4](https://tailwindcss.com/)                                                      |
 | UI components | [shadcn/ui](https://ui.shadcn.com/) (style `base-rhea`, base color `zinc`, icons from `lucide`) |
-| Testing       | [Vitest](https://vitest.dev/)                                                                   |
+| Testing       | [Vitest](https://vitest.dev/)                                                                    |
+
+## Adding UI components
+
+This project uses shadcn/ui — add new components through the CLI rather than hand-writing them, so they stay in sync with the configured style:
+
+```bash
+npx shadcn@latest add button
+```
+
+Import them like any other component:
+
+```tsx
+import { Button } from "@/components/ui/button"
+```
 
 ## Privacy
 
