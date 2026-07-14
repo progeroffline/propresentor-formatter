@@ -22,12 +22,18 @@ const GROUP_DEFINITIONS: GroupDefinition[] = [
   { canonical: "Verse", aliases: ["verse", "куплет"] },
   { canonical: "Chorus", aliases: ["chorus", "припев"] },
   { canonical: "Bridge", aliases: ["bridge", "бридж"] },
-  { canonical: "PreChorus", aliases: ["prechorus", "pre chorus", "предприпев"] },
-  { canonical: "Tag", aliases: ["tag", "тег"] },
+  {
+    canonical: "PreChorus",
+    aliases: ["prechorus", "pre chorus", "предприпев", "пред припев"],
+  },
+  { canonical: "Tag", aliases: ["tag", "тег", "coda", "кода"] },
   { canonical: "Intro", aliases: ["intro", "интро"] },
   { canonical: "Ending", aliases: ["ending", "концовка"] },
   { canonical: "Outro", aliases: ["outro", "аутро"] },
-  { canonical: "Interlude", aliases: ["interlude", "проигрыш"] },
+  {
+    canonical: "Interlude",
+    aliases: ["interlude", "проигрыш", "instrumental", "инструментал"],
+  },
   { canonical: "Vamp", aliases: ["vamp", "вамп"] },
   { canonical: "Turnaround", aliases: ["turnaround", "переход"] },
   { canonical: "Blank", aliases: ["blank", "пусто"] },
@@ -65,23 +71,48 @@ function matchGroupHeader(line: string): string | null {
     return null
   }
 
+  // "Chorus Tag", "Bridge 1 Tag", "Verse Coda", etc. — whatever group name
+  // or number comes before the trailing "Tag"/"Coda" word is dropped; it's
+  // still just a single "Tag" group.
+  if (/^.+\s(?:tag|тег|coda|кода)$/i.test(normalized)) {
+    return "Tag"
+  }
+
   // The section number can come either before the name ("1 Куплет") or
   // after it ("Куплет 2" / "Verse 2"), since both orderings are common.
-  const match = normalized.match(
-    /^(?:(\d+)\s+)?([a-zа-яё]+(?: [a-zа-яё]+)*?)(?:\s+(\d+))?$/i
-  )
-  if (!match) {
-    return null
+  // Each token gets its own trailing punctuation stripped (not just the end
+  // of the whole line), since a colon can sit right after the name even
+  // when something else — like a chord progression — follows it.
+  const tokens = normalized
+    .split(" ")
+    .map((token) => token.replace(/[:,.]+$/, ""))
+    .filter((token) => token.length > 0)
+  let index = 0
+  let leadingNumber: string | undefined
+  if (/^\d+$/.test(tokens[index])) {
+    leadingNumber = tokens[index]
+    index += 1
   }
 
-  const [, leadingNumber, stem, trailingNumber] = match
-  const canonical = STEM_TO_CANONICAL.get(stem)
-  if (!canonical) {
-    return null
+  // Anything past the recognized name (and its number) is ignored — e.g. a
+  // chord progression tacked onto the same line as "Проигрыш Dm/Gm/C/Dm/"
+  // should still resolve to just "Interlude", with the chords dropped.
+  const maxStemWords = Math.min(2, tokens.length - index)
+  for (let wordCount = maxStemWords; wordCount >= 1; wordCount -= 1) {
+    const stem = tokens.slice(index, index + wordCount).join(" ")
+    const canonical = STEM_TO_CANONICAL.get(stem)
+    if (!canonical) {
+      continue
+    }
+
+    const numberToken = tokens[index + wordCount]
+    const trailingNumber =
+      numberToken && /^\d+$/.test(numberToken) ? numberToken : undefined
+    const number = leadingNumber ?? trailingNumber
+    return number ? `${canonical} ${number}` : canonical
   }
 
-  const number = leadingNumber ?? trailingNumber
-  return number ? `${canonical} ${number}` : canonical
+  return null
 }
 
 function capitalizeSlideText(lines: string[]): string[] {
