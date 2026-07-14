@@ -7,13 +7,13 @@ describe("regression: prose starting with a group name is not a header", () => {
   it("does not swallow the rest of the line when it isn't a chord progression", () => {
     const result = formatLyrics("Bridge to nowhere\nsome lyric line", PLAIN)
     expect(result.sections).toEqual([])
-    expect(result.output).toBe("Bridge to nowhere\nsome lyric line")
+    expect(result.output).toBe("Bridge to nowhere\n\nsome lyric line")
   })
 
   it("does not swallow the rest of the line for a different group name", () => {
     const result = formatLyrics("Verse of the day\nsome lyric line", PLAIN)
     expect(result.sections).toEqual([])
-    expect(result.output).toBe("Verse of the day\nsome lyric line")
+    expect(result.output).toBe("Verse of the day\n\nsome lyric line")
   })
 })
 
@@ -46,7 +46,7 @@ describe("regression: punctuation-only lines don't leave stray blank lines", () 
       ...PLAIN,
       removePunctuation: true,
     })
-    expect(result.output).toBe("[Verse]\nHello\nworld")
+    expect(result.output).toBe("[Verse]\nHello\n\nworld")
   })
 
   it("still capitalizes the first real content line when an earlier line is punctuation-only", () => {

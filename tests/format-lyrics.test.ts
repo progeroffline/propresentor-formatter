@@ -19,6 +19,19 @@ describe("header parsing mechanics", () => {
   })
 })
 
+describe("slide splitting", () => {
+  it("turns each lyric line under a header into its own slide", () => {
+    const result = formatLyrics("Verse\nline 1\nline 2\nline 3", PLAIN)
+    expect(result.slideCount).toBe(3)
+    expect(result.output).toBe("[Verse]\nline 1\n\nline 2\n\nline 3")
+    expect(result.slides).toEqual([
+      { header: "Verse", lines: ["line 1"], isTitle: false },
+      { header: "Verse", lines: ["line 2"], isTitle: false },
+      { header: "Verse", lines: ["line 3"], isTitle: false },
+    ])
+  })
+})
+
 describe("Title: prefix", () => {
   it("prefixes the leading unlabeled block when the song has other sections", () => {
     const result = formatLyrics("Song Name (Author)\n\nVerse\nline 1", PLAIN)
@@ -50,7 +63,7 @@ describe("formatting options", () => {
   it("strips punctuation (including quotes) from lyric lines", () => {
     const options: FormatOptions = { ...PLAIN, removePunctuation: true }
     const result = formatLyrics("Verse\nHello, world!\nIt's fine.", options)
-    expect(result.output).toBe("[Verse]\nHello world\nIts fine")
+    expect(result.output).toBe("[Verse]\nHello world\n\nIts fine")
   })
 
   it("capitalizes only the first letter of each slide", () => {

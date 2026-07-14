@@ -308,11 +308,15 @@ export function formatLyrics(
       if (options.removePunctuation) {
         lines = stripPunctuation(lines)
       }
-      if (options.capitalizeSlides) {
-        lines = capitalizeSlideText(lines)
-      }
-      if (lines.length > 0) {
-        blocks.push({ type: "slide", lines })
+
+      // Each lyric line becomes its own slide, so a multi-line chunk (a
+      // verse/chorus with several lines under one header) turns into that
+      // many separate blocks rather than one slide with several lines.
+      for (let line of lines) {
+        if (options.capitalizeSlides) {
+          ;[line] = capitalizeSlideText([line])
+        }
+        blocks.push({ type: "slide", lines: [line] })
       }
     }
   }
@@ -333,18 +337,17 @@ export function formatLyrics(
   // the plain-text `output` (used for copy/paste into ProPresenter) still
   // gets the prefix via the blocks mutation further down.
   const slides: FormatSlide[] = []
-  let pendingHeader: string | null = null
+  let currentHeader: string | null = null
   for (const block of blocks) {
     if (block.type === "header") {
-      pendingHeader = block.text
+      currentHeader = block.text
       continue
     }
     slides.push({
-      header: pendingHeader,
+      header: currentHeader,
       lines: block.lines,
       isTitle: isTitleSlide && block === firstBlock,
     })
-    pendingHeader = null
   }
 
   if (isTitleSlide && firstBlock.type === "slide") {

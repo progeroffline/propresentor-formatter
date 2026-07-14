@@ -73,21 +73,24 @@ export function OutputPanel({
               {slides.map((slide, index) => (
                 <div
                   key={index}
-                  className="flex w-full flex-col gap-2 rounded-xl border bg-card p-4 shadow-sm ring-1 ring-foreground/5 dark:ring-foreground/10"
+                  className="flex w-full items-center justify-between gap-4 rounded-xl border bg-card p-4 shadow-sm ring-1 ring-foreground/5 dark:ring-foreground/10"
                 >
+                  <div className="min-w-0 flex-1">
+                    {slide.isTitle ? (
+                      <p className="text-center font-heading text-lg font-semibold whitespace-pre-wrap">
+                        {slide.lines.join("\n")}
+                      </p>
+                    ) : (
+                      <pre className="font-mono text-sm whitespace-pre-wrap">
+                        {slide.lines.join("\n")}
+                      </pre>
+                    )}
+                  </div>
+
                   {slide.header && (
-                    <Badge variant="secondary" className="w-fit font-mono">
+                    <span className="shrink-0 font-mono text-xs text-muted-foreground/60">
                       {slide.header}
-                    </Badge>
-                  )}
-                  {slide.isTitle ? (
-                    <p className="text-center font-heading text-lg font-semibold whitespace-pre-wrap">
-                      {slide.lines.join("\n")}
-                    </p>
-                  ) : (
-                    <pre className="font-mono text-sm whitespace-pre-wrap">
-                      {slide.lines.join("\n")}
-                    </pre>
+                    </span>
                   )}
                 </div>
               ))}
