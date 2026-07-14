@@ -125,9 +125,10 @@ Open the printed local URL, paste in some lyrics, and press `Ctrl+Enter`.
 | UI components | [shadcn/ui](https://ui.shadcn.com/) (style `base-rhea`, base color `zinc`, icons from `lucide`) |
 | Testing       | [Vitest](https://vitest.dev/)                                                                   |
 
-```
-
 ## Privacy
 
 There is no backend. Parsing, formatting, and preview rendering all happen locally in your browser — nothing you paste is ever sent anywhere.
+
+```
+
 ```
