@@ -19,9 +19,7 @@ describe("regression: prose starting with a group name is not a header", () => {
 
 describe("regression: header trailing punctuation", () => {
   it("recognizes a header ending in an exclamation or question mark", () => {
-    expect(formatLyrics("Chorus!\nline 1", PLAIN).sections).toEqual([
-      "Chorus",
-    ])
+    expect(formatLyrics("Chorus!\nline 1", PLAIN).sections).toEqual(["Chorus"])
     expect(formatLyrics("Verse?\nline 1", PLAIN).sections).toEqual(["Verse"])
   })
 })

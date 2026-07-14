@@ -19,30 +19,22 @@ describe("Tag", () => {
     expect(formatLyrics("Пост приспів\nline 1", PLAIN).sections).toEqual([
       "Tag",
     ])
-    expect(formatLyrics("Постприпев\nline 1", PLAIN).sections).toEqual([
-      "Tag",
-    ])
-    expect(formatLyrics("Post Chorus\nline 1", PLAIN).sections).toEqual([
-      "Tag",
-    ])
+    expect(formatLyrics("Постприпев\nline 1", PLAIN).sections).toEqual(["Tag"])
+    expect(formatLyrics("Post Chorus\nline 1", PLAIN).sections).toEqual(["Tag"])
   })
 
   it("collapses 'Chorus Tag'/'Bridge 1 Tag'/'Verse Coda' down to a plain Tag group", () => {
-    expect(formatLyrics("Chorus Tag:\nline 1", PLAIN).sections).toEqual([
-      "Tag",
-    ])
+    expect(formatLyrics("Chorus Tag:\nline 1", PLAIN).sections).toEqual(["Tag"])
     expect(formatLyrics("Bridge 1 Tag:\nline 1", PLAIN).sections).toEqual([
       "Tag",
     ])
-    expect(formatLyrics("Verse Coda\nline 1", PLAIN).sections).toEqual([
-      "Tag",
-    ])
+    expect(formatLyrics("Verse Coda\nline 1", PLAIN).sections).toEqual(["Tag"])
   })
 
   it("still collapses to Tag when a chord progression follows the tag word", () => {
-    expect(
-      formatLyrics("Bridge Tag: Dm/Gm/C\nline 1", PLAIN).sections
-    ).toEqual(["Tag"])
+    expect(formatLyrics("Bridge Tag: Dm/Gm/C\nline 1", PLAIN).sections).toEqual(
+      ["Tag"]
+    )
   })
 
   it("keeps a number placed after the tag word, but drops one placed before it", () => {

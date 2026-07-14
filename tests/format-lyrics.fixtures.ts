@@ -4,4 +4,5 @@ export const PLAIN: FormatOptions = {
   capitalizeSlides: false,
   removePunctuation: false,
   removeLinks: false,
+  outputLanguage: "en",
 }

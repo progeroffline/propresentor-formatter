@@ -23,9 +23,7 @@ describe("PreChorus", () => {
   })
 
   it("recognizes Ukrainian aliases", () => {
-    expect(formatLyrics("Запев\nline 1", PLAIN).sections).toEqual([
-      "PreChorus",
-    ])
+    expect(formatLyrics("Запев\nline 1", PLAIN).sections).toEqual(["PreChorus"])
     expect(formatLyrics("Заспів\nline 1", PLAIN).sections).toEqual([
       "PreChorus",
     ])

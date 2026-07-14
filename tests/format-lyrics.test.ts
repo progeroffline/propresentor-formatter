@@ -25,9 +25,24 @@ describe("slide splitting", () => {
     expect(result.slideCount).toBe(3)
     expect(result.output).toBe("[Verse]\nline 1\n\nline 2\n\nline 3")
     expect(result.slides).toEqual([
-      { header: "Verse", lines: ["line 1"], isTitle: false },
-      { header: "Verse", lines: ["line 2"], isTitle: false },
-      { header: "Verse", lines: ["line 3"], isTitle: false },
+      {
+        header: "Verse",
+        headerLabel: "Verse",
+        lines: ["line 1"],
+        isTitle: false,
+      },
+      {
+        header: "Verse",
+        headerLabel: "Verse",
+        lines: ["line 2"],
+        isTitle: false,
+      },
+      {
+        header: "Verse",
+        headerLabel: "Verse",
+        lines: ["line 3"],
+        isTitle: false,
+      },
     ])
   })
 })

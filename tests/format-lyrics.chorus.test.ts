@@ -5,13 +5,9 @@ import { formatLyrics } from "@/lib/format-lyrics"
 
 describe("Chorus", () => {
   it("recognizes English, Russian, and Ukrainian aliases", () => {
-    expect(formatLyrics("Chorus\nline 1", PLAIN).sections).toEqual([
-      "Chorus",
-    ])
+    expect(formatLyrics("Chorus\nline 1", PLAIN).sections).toEqual(["Chorus"])
     expect(formatLyrics("Припев\nline 1", PLAIN).sections).toEqual(["Chorus"])
-    expect(formatLyrics("Приспів\nline 1", PLAIN).sections).toEqual([
-      "Chorus",
-    ])
+    expect(formatLyrics("Приспів\nline 1", PLAIN).sections).toEqual(["Chorus"])
   })
 
   it("is case-insensitive", () => {
@@ -19,12 +15,8 @@ describe("Chorus", () => {
   })
 
   it("strips a trailing comma or colon", () => {
-    expect(formatLyrics("Chorus,\nline 1", PLAIN).sections).toEqual([
-      "Chorus",
-    ])
-    expect(formatLyrics("Приспів:\nline 1", PLAIN).sections).toEqual([
-      "Chorus",
-    ])
+    expect(formatLyrics("Chorus,\nline 1", PLAIN).sections).toEqual(["Chorus"])
+    expect(formatLyrics("Приспів:\nline 1", PLAIN).sections).toEqual(["Chorus"])
   })
 
   it("treats a trailing x2/х2 repeat marker as decoration, not content", () => {

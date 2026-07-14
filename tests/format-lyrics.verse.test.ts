@@ -10,12 +10,8 @@ describe("Verse", () => {
   })
 
   it("accepts a number before or after the name", () => {
-    expect(formatLyrics("Verse 2\nline 1", PLAIN).sections).toEqual([
-      "Verse 2",
-    ])
-    expect(formatLyrics("2 Verse\nline 1", PLAIN).sections).toEqual([
-      "Verse 2",
-    ])
+    expect(formatLyrics("Verse 2\nline 1", PLAIN).sections).toEqual(["Verse 2"])
+    expect(formatLyrics("2 Verse\nline 1", PLAIN).sections).toEqual(["Verse 2"])
     expect(formatLyrics("Куплет 2\nline 1", PLAIN).sections).toEqual([
       "Verse 2",
     ])
