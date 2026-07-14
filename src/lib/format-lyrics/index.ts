@@ -1,4 +1,5 @@
 import { matchGroupHeader } from "./header-matching"
+import { translateSectionHeader, translateTitleLabel } from "./output-language"
 import {
   capitalizeSlideText,
   stripLinks,
@@ -6,7 +7,12 @@ import {
 } from "./text-transforms"
 import type { FormatOptions, FormatResult, FormatSlide } from "./types"
 
-export type { FormatOptions, FormatResult, FormatSlide } from "./types"
+export type {
+  FormatOptions,
+  FormatResult,
+  FormatSlide,
+  OutputLanguage,
+} from "./types"
 
 type Block =
   { type: "header"; text: string } | { type: "slide"; lines: string[] }
@@ -71,6 +77,9 @@ export function formatLyrics(
     }
     slides.push({
       header: currentHeader,
+      headerLabel: currentHeader
+        ? translateSectionHeader(currentHeader, options.outputLanguage)
+        : null,
       lines: block.lines,
       isTitle: isTitleSlide && block === firstBlock,
     })
@@ -78,7 +87,8 @@ export function formatLyrics(
 
   if (isTitleSlide && firstBlock.type === "slide") {
     const [firstLine, ...rest] = firstBlock.lines
-    firstBlock.lines = [`Title: ${firstLine}`, ...rest]
+    const titleLabel = translateTitleLabel(options.outputLanguage)
+    firstBlock.lines = [`${titleLabel}: ${firstLine}`, ...rest]
   }
 
   const sections = blocks
@@ -86,7 +96,7 @@ export function formatLyrics(
       (block): block is { type: "header"; text: string } =>
         block.type === "header"
     )
-    .map((block) => block.text)
+    .map((block) => translateSectionHeader(block.text, options.outputLanguage))
 
   const slideCount = blocks.filter((block) => block.type === "slide").length
 
@@ -98,7 +108,9 @@ export function formatLyrics(
       if (previous) {
         outputParts.push("")
       }
-      outputParts.push(`[${block.text}]`)
+      outputParts.push(
+        `[${translateSectionHeader(block.text, options.outputLanguage)}]`
+      )
       return
     }
 

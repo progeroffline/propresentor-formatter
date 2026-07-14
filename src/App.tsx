@@ -21,6 +21,8 @@ export function App() {
           onRemovePunctuationChange={formatter.setRemovePunctuation}
           removeLinks={formatter.removeLinks}
           onRemoveLinksChange={formatter.setRemoveLinks}
+          outputLanguage={formatter.outputLanguage}
+          onOutputLanguageChange={formatter.setOutputLanguage}
         />
 
         <main className="grid grid-cols-1 gap-4 p-4 sm:px-6 lg:min-h-0 lg:flex-1 lg:grid-cols-2 lg:overflow-hidden">

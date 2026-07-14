@@ -63,6 +63,7 @@ export const uk: AppStrings = {
     capitalizeSlides: "Велика літера на початку кожного слайду",
     removePunctuation: "Прибрати розділові знаки",
     removeLinks: "Прибрати посилання",
+    outputLanguage: "Мова ProPresenter",
   },
   input: {
     title: "Вхід",

@@ -50,6 +50,7 @@ export const ru: AppStrings = {
     capitalizeSlides: "Заглавная буква в начале каждого слайда",
     removePunctuation: "Убрать знаки препинания",
     removeLinks: "Убрать ссылки",
+    outputLanguage: "Язык ProPresenter",
   },
   input: {
     title: "Ввод",

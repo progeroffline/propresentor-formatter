@@ -2,7 +2,11 @@ import * as React from "react"
 import { toast } from "sonner"
 
 import { useLocale } from "@/components/locale-provider"
-import { formatLyrics, type FormatResult } from "@/lib/format-lyrics"
+import {
+  formatLyrics,
+  type FormatResult,
+  type OutputLanguage,
+} from "@/lib/format-lyrics"
 
 const EMPTY_RESULT: FormatResult = {
   output: "",
@@ -17,15 +21,28 @@ export function useLyricsFormatter() {
   const [capitalizeSlides, setCapitalizeSlides] = React.useState(true)
   const [removePunctuation, setRemovePunctuation] = React.useState(true)
   const [removeLinks, setRemoveLinks] = React.useState(true)
+  const [outputLanguage, setOutputLanguage] =
+    React.useState<OutputLanguage>("en")
 
   const [formatResult, setFormatResult] =
     React.useState<FormatResult>(EMPTY_RESULT)
 
   const format = React.useCallback(() => {
     setFormatResult(
-      formatLyrics(inputText, { capitalizeSlides, removePunctuation, removeLinks })
+      formatLyrics(inputText, {
+        capitalizeSlides,
+        removePunctuation,
+        removeLinks,
+        outputLanguage,
+      })
     )
-  }, [inputText, capitalizeSlides, removePunctuation, removeLinks])
+  }, [
+    inputText,
+    capitalizeSlides,
+    removePunctuation,
+    removeLinks,
+    outputLanguage,
+  ])
 
   const clear = React.useCallback(() => {
     setInputText("")
@@ -52,6 +69,8 @@ export function useLyricsFormatter() {
     setRemovePunctuation,
     removeLinks,
     setRemoveLinks,
+    outputLanguage,
+    setOutputLanguage,
     outputText: formatResult.output,
     sections: formatResult.sections,
     slideCount: formatResult.slideCount,

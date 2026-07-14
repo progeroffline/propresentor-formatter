@@ -95,9 +95,9 @@ export function OutputPanel({
                       )}
                     </div>
 
-                    {slide.header && (
+                    {slide.headerLabel && (
                       <span className="shrink-0 font-mono text-xs text-muted-foreground/60">
-                        {slide.header}
+                        {slide.headerLabel}
                       </span>
                     )}
                   </div>

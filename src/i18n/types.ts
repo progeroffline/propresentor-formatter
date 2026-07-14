@@ -12,6 +12,7 @@ export interface AppStrings {
     capitalizeSlides: string
     removePunctuation: string
     removeLinks: string
+    outputLanguage: string
   }
   input: {
     title: string

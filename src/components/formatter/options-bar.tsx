@@ -2,6 +2,9 @@ import { useLocale } from "@/components/locale-provider"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
+import type { OutputLanguage } from "@/lib/format-lyrics"
+
+import { OutputLanguageSelect } from "./output-language-select"
 
 export function OptionsBar({
   capitalizeSlides,
@@ -10,6 +13,8 @@ export function OptionsBar({
   onRemovePunctuationChange,
   removeLinks,
   onRemoveLinksChange,
+  outputLanguage,
+  onOutputLanguageChange,
 }: {
   capitalizeSlides: boolean
   onCapitalizeSlidesChange: (value: boolean) => void
@@ -17,6 +22,8 @@ export function OptionsBar({
   onRemovePunctuationChange: (value: boolean) => void
   removeLinks: boolean
   onRemoveLinksChange: (value: boolean) => void
+  outputLanguage: OutputLanguage
+  onOutputLanguageChange: (value: OutputLanguage) => void
 }) {
   const { strings } = useLocale()
 
@@ -57,6 +64,17 @@ export function OptionsBar({
           onCheckedChange={onRemoveLinksChange}
         />
         <Label htmlFor="remove-links">{strings.options.removeLinks}</Label>
+      </div>
+
+      <Separator orientation="vertical" className="h-5" />
+
+      <div className="flex items-center gap-2">
+        <Label>{strings.options.outputLanguage}</Label>
+        <OutputLanguageSelect
+          value={outputLanguage}
+          onValueChange={onOutputLanguageChange}
+          label={strings.options.outputLanguage}
+        />
       </div>
     </div>
   )
