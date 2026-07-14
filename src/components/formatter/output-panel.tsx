@@ -1,4 +1,5 @@
 import { useLocale } from "@/components/locale-provider"
+import { useTheme } from "@/components/theme-provider"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,6 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import type { FormatSlide } from "@/lib/format-lyrics"
+import { getSectionColor, hexToRgba } from "@/lib/section-colors"
 
 import { SectionBadges } from "./section-badges"
 
@@ -31,6 +33,7 @@ export function OutputPanel({
   onCopy: () => void
 }) {
   const { strings } = useLocale()
+  const { resolvedTheme } = useTheme()
 
   return (
     <Card className="flex min-h-0 flex-col">
@@ -70,30 +73,42 @@ export function OutputPanel({
         <ScrollArea className="min-h-0 flex-1 rounded-2xl border bg-input/30">
           {slides.length > 0 ? (
             <div className="flex flex-col gap-3 p-4">
-              {slides.map((slide, index) => (
-                <div
-                  key={index}
-                  className="flex w-full items-center justify-between gap-4 rounded-xl border bg-card p-4 shadow-sm ring-1 ring-foreground/5 dark:ring-foreground/10"
-                >
-                  <div className="min-w-0 flex-1">
-                    {slide.isTitle ? (
-                      <p className="text-center font-heading text-lg font-semibold whitespace-pre-wrap">
-                        {slide.lines.join("\n")}
-                      </p>
-                    ) : (
-                      <pre className="font-mono text-sm whitespace-pre-wrap">
-                        {slide.lines.join("\n")}
-                      </pre>
+              {slides.map((slide, index) => {
+                const color = getSectionColor(slide.header)
+                const tintBackground =
+                  color && resolvedTheme === "light"
+                    ? hexToRgba(color, 0.1)
+                    : undefined
+
+                return (
+                  <div
+                    key={index}
+                    className="flex w-full items-center justify-between gap-4 rounded-xl border-2 bg-card p-4 shadow-sm ring-1 ring-foreground/5 dark:ring-foreground/10"
+                    style={{
+                      borderColor: color,
+                      backgroundColor: tintBackground,
+                    }}
+                  >
+                    <div className="min-w-0 flex-1">
+                      {slide.isTitle ? (
+                        <p className="text-center font-heading text-lg font-semibold whitespace-pre-wrap">
+                          {slide.lines.join("\n")}
+                        </p>
+                      ) : (
+                        <pre className="font-mono text-sm whitespace-pre-wrap">
+                          {slide.lines.join("\n")}
+                        </pre>
+                      )}
+                    </div>
+
+                    {slide.header && (
+                      <span className="shrink-0 font-mono text-xs text-muted-foreground/60">
+                        {slide.header}
+                      </span>
                     )}
                   </div>
-
-                  {slide.header && (
-                    <span className="shrink-0 font-mono text-xs text-muted-foreground/60">
-                      {slide.header}
-                    </span>
-                  )}
-                </div>
-              ))}
+                )
+              })}
             </div>
           ) : (
             <p className="p-4 font-mono text-sm text-muted-foreground">
