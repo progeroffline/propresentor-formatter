@@ -1,6 +1,6 @@
 import type { AppStrings } from "../types"
 
-import { pluralizeRu } from "./pluralize-ru"
+import { pluralizeSlavic } from "./pluralize-slavic"
 
 const SONG_PLACEHOLDER = `Я спасён от огня (Алексей Заханеко)
 
@@ -62,7 +62,7 @@ export const ru: AppStrings = {
   output: {
     title: "Вывод — готово для ProPresenter",
     slideCount: (count) =>
-      `${count} ${pluralizeRu(count, "слайд", "слайда", "слайдов")}`,
+      `${count} ${pluralizeSlavic(count, "слайд", "слайда", "слайдов")}`,
     copy: "Копировать",
     copyTooltip: "Скопировать результат",
     copiedToast: "Скопировано в буфер обмена",

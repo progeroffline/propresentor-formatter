@@ -39,9 +39,7 @@ describe("group header recognition", () => {
     expect(formatLyrics("Intro\nline 1", PLAIN).sections).toEqual(["Intro"])
     expect(formatLyrics("Интро\nline 1", PLAIN).sections).toEqual(["Intro"])
     expect(formatLyrics("Ending\nline 1", PLAIN).sections).toEqual(["Ending"])
-    expect(formatLyrics("Концовка\nline 1", PLAIN).sections).toEqual([
-      "Ending",
-    ])
+    expect(formatLyrics("Концовка\nline 1", PLAIN).sections).toEqual(["Ending"])
     expect(formatLyrics("Outro\nline 1", PLAIN).sections).toEqual(["Outro"])
     expect(formatLyrics("Аутро\nline 1", PLAIN).sections).toEqual(["Outro"])
     expect(formatLyrics("Interlude\nline 1", PLAIN).sections).toEqual([
@@ -62,13 +60,20 @@ describe("group header recognition", () => {
     expect(formatLyrics("Пусто\nline 1", PLAIN).sections).toEqual(["Blank"])
   })
 
+  it("recognizes Ukrainian aliases", () => {
+    expect(formatLyrics("Куплет\nline 1", PLAIN).sections).toEqual(["Verse"])
+    expect(formatLyrics("Приспів\nline 1", PLAIN).sections).toEqual(["Chorus"])
+    expect(formatLyrics("Інтро\nline 1", PLAIN).sections).toEqual(["Intro"])
+    expect(formatLyrics("Заспів\nline 1", PLAIN).sections).toEqual(["Tag"])
+    expect(formatLyrics("1 Куплет:\nline 1", PLAIN).sections).toEqual([
+      "Verse 1",
+    ])
+    expect(formatLyrics("Приспів:\nline 1", PLAIN).sections).toEqual(["Chorus"])
+  })
+
   it("accepts a number before or after the group name", () => {
-    expect(formatLyrics("Verse 2\nline 1", PLAIN).sections).toEqual([
-      "Verse 2",
-    ])
-    expect(formatLyrics("2 Verse\nline 1", PLAIN).sections).toEqual([
-      "Verse 2",
-    ])
+    expect(formatLyrics("Verse 2\nline 1", PLAIN).sections).toEqual(["Verse 2"])
+    expect(formatLyrics("2 Verse\nline 1", PLAIN).sections).toEqual(["Verse 2"])
     expect(formatLyrics("Куплет 2\nline 1", PLAIN).sections).toEqual([
       "Verse 2",
     ])
@@ -81,9 +86,7 @@ describe("group header recognition", () => {
     expect(formatLyrics("Куплет 1:\nline 1", PLAIN).sections).toEqual([
       "Verse 1",
     ])
-    expect(formatLyrics("Chorus,\nline 1", PLAIN).sections).toEqual([
-      "Chorus",
-    ])
+    expect(formatLyrics("Chorus,\nline 1", PLAIN).sections).toEqual(["Chorus"])
     expect(formatLyrics("Бридж.\nline 1", PLAIN).sections).toEqual(["Bridge"])
   })
 
@@ -138,9 +141,9 @@ describe("group header recognition", () => {
   })
 
   it("still reads a numbered section that has a chord suffix", () => {
-    expect(formatLyrics("Bridge 1 Am/F/C/G\nline 1", PLAIN).sections).toEqual(
-      ["Bridge 1"]
-    )
+    expect(formatLyrics("Bridge 1 Am/F/C/G\nline 1", PLAIN).sections).toEqual([
+      "Bridge 1",
+    ])
     expect(formatLyrics("1 Verse Dm/Am\nline 1", PLAIN).sections).toEqual([
       "Verse 1",
     ])
@@ -161,9 +164,7 @@ describe("group header recognition", () => {
 describe("Title: prefix", () => {
   it("prefixes the leading unlabeled block when the song has other sections", () => {
     const result = formatLyrics("Song Name (Author)\n\nVerse\nline 1", PLAIN)
-    expect(result.output).toBe(
-      "Title: Song Name (Author)\n\n[Verse]\nline 1"
-    )
+    expect(result.output).toBe("Title: Song Name (Author)\n\n[Verse]\nline 1")
   })
 
   it("does not add a Title prefix when the song has no recognized sections", () => {
@@ -198,6 +199,16 @@ describe("formatting options", () => {
     const options: FormatOptions = { ...PLAIN, capitalizeSlides: true }
     const result = formatLyrics("verse\nline one\n\nchorus\nline two", options)
     expect(result.output).toBe("[Verse]\nLine one\n\n[Chorus]\nLine two")
+  })
+
+  it("capitalizes Ukrainian-specific first letters (і/ї/є/ґ)", () => {
+    const options: FormatOptions = { ...PLAIN, capitalizeSlides: true }
+    expect(formatLyrics("Verse\nіснує рядок", options).output).toBe(
+      "[Verse]\nІснує рядок"
+    )
+    expect(formatLyrics("Verse\nєдиний рядок", options).output).toBe(
+      "[Verse]\nЄдиний рядок"
+    )
   })
 })
 
@@ -350,14 +361,10 @@ describe("extra label variants", () => {
   })
 
   it("collapses 'Chorus Tag'/'Bridge 1 Tag'/'Verse Coda' down to a plain Tag group", () => {
-    expect(formatLyrics("Chorus Tag:\nline 1", PLAIN).sections).toEqual([
-      "Tag",
-    ])
+    expect(formatLyrics("Chorus Tag:\nline 1", PLAIN).sections).toEqual(["Tag"])
     expect(formatLyrics("Bridge 1 Tag:\nline 1", PLAIN).sections).toEqual([
       "Tag",
     ])
-    expect(formatLyrics("Verse Coda\nline 1", PLAIN).sections).toEqual([
-      "Tag",
-    ])
+    expect(formatLyrics("Verse Coda\nline 1", PLAIN).sections).toEqual(["Tag"])
   })
 })

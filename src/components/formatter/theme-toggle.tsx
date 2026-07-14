@@ -1,7 +1,6 @@
 import { Moon, Sun } from "lucide-react"
 
-import { strings } from "@/i18n"
-
+import { useLocale } from "@/components/locale-provider"
 import { useTheme } from "@/components/theme-provider"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,6 +11,7 @@ import {
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
+  const { strings } = useLocale()
   const isDark = resolvedTheme === "dark"
 
   return (

@@ -1,4 +1,9 @@
-export function pluralizeRu(count: number, one: string, few: string, many: string) {
+export function pluralizeSlavic(
+  count: number,
+  one: string,
+  few: string,
+  many: string
+) {
   const mod10 = count % 10
   const mod100 = count % 100
 

@@ -1,5 +1,4 @@
-import { strings } from "@/i18n"
-
+import { useLocale } from "@/components/locale-provider"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
@@ -19,6 +18,8 @@ export function OptionsBar({
   removeLinks: boolean
   onRemoveLinksChange: (value: boolean) => void
 }) {
+  const { strings } = useLocale()
+
   return (
     <div className="flex flex-wrap items-center gap-4 border-b px-4 py-3 sm:px-6">
       <Label className="text-muted-foreground">{strings.options.label}</Label>

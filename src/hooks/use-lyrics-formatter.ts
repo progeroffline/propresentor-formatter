@@ -1,10 +1,11 @@
 import * as React from "react"
 import { toast } from "sonner"
 
-import { strings } from "@/i18n"
+import { useLocale } from "@/components/locale-provider"
 import { formatLyrics } from "@/lib/format-lyrics"
 
 export function useLyricsFormatter() {
+  const { strings } = useLocale()
   const [inputText, setInputText] = React.useState("")
   const [capitalizeSlides, setCapitalizeSlides] = React.useState(true)
   const [removePunctuation, setRemovePunctuation] = React.useState(true)
@@ -39,7 +40,7 @@ export function useLyricsFormatter() {
 
     void navigator.clipboard.writeText(outputText)
     toast.success(strings.output.copiedToast)
-  }, [outputText])
+  }, [outputText, strings])
 
   React.useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {

@@ -1,5 +1,4 @@
-import { strings } from "@/i18n"
-
+import { useLocale } from "@/components/locale-provider"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -27,6 +26,8 @@ export function InputPanel({
   onClear: () => void
   onFormat: () => void
 }) {
+  const { strings } = useLocale()
+
   return (
     <Card className="flex min-h-0 flex-col">
       <CardHeader className="flex-row items-center justify-between">

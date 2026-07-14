@@ -15,19 +15,19 @@ interface GroupDefinition {
   aliases: string[]
 }
 
-// English/Russian names ProPresenter recognizes as arrangement group labels
-// when wrapped in square brackets (e.g. "[Verse 1]"), or written plainly on
-// their own line in the pasted lyrics.
+// English/Russian/Ukrainian names ProPresenter recognizes as arrangement
+// group labels when wrapped in square brackets (e.g. "[Verse 1]"), or
+// written plainly on their own line in the pasted lyrics.
 const GROUP_DEFINITIONS: GroupDefinition[] = [
   { canonical: "Verse", aliases: ["verse", "куплет"] },
-  { canonical: "Chorus", aliases: ["chorus", "припев"] },
+  { canonical: "Chorus", aliases: ["chorus", "припев", "приспів"] },
   { canonical: "Bridge", aliases: ["bridge", "бридж"] },
   {
     canonical: "PreChorus",
     aliases: ["prechorus", "pre chorus", "предприпев", "пред припев"],
   },
-  { canonical: "Tag", aliases: ["tag", "тег", "coda", "кода"] },
-  { canonical: "Intro", aliases: ["intro", "интро"] },
+  { canonical: "Tag", aliases: ["tag", "тег", "coda", "кода", "заспів"] },
+  { canonical: "Intro", aliases: ["intro", "интро", "інтро"] },
   { canonical: "Ending", aliases: ["ending", "концовка"] },
   { canonical: "Outro", aliases: ["outro", "аутро"] },
   {
@@ -53,16 +53,18 @@ function normalizeHeaderCandidate(line: string): string {
   const bracketMatch = line.trim().match(/^\[(.+)\]$/)
   const text = bracketMatch ? bracketMatch[1] : line
 
-  return text
-    .trim()
-    .toLowerCase()
-    // Drop a trailing repeat marker like "Припев: х2" or "Chorus x2" —
-    // it means "repeat this section", not a numbered variant.
-    .replace(/[\s:,.\-–—]*[xх×]\s*\d+$/i, "")
-    .replace(/[-–—:,.]+$/, "")
-    .replace(/[-–—]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
+  return (
+    text
+      .trim()
+      .toLowerCase()
+      // Drop a trailing repeat marker like "Припев: х2" or "Chorus x2" —
+      // it means "repeat this section", not a numbered variant.
+      .replace(/[\s:,.\-–—]*[xх×]\s*\d+$/i, "")
+      .replace(/[-–—:,.]+$/, "")
+      .replace(/[-–—]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+  )
 }
 
 function matchGroupHeader(line: string): string | null {
@@ -121,7 +123,7 @@ function capitalizeSlideText(lines: string[]): string[] {
   }
 
   const [firstLine, ...rest] = lines
-  const letterMatch = firstLine.match(/[a-zа-яё]/i)
+  const letterMatch = firstLine.match(/[a-zа-яёіїєґ]/i)
   if (!letterMatch || letterMatch.index === undefined) {
     return [firstLine, ...rest]
   }
@@ -137,21 +139,31 @@ function capitalizeSlideText(lines: string[]): string[] {
 
 function stripPunctuation(lines: string[]): string[] {
   return lines.map((line) =>
-    line.replace(PUNCTUATION_PATTERN, "").replace(/\s{2,}/g, " ").trim()
+    line
+      .replace(PUNCTUATION_PATTERN, "")
+      .replace(/\s{2,}/g, " ")
+      .trim()
   )
 }
 
 function stripLinks(lines: string[]): string[] {
   return lines
-    .map((line) => line.replace(URL_PATTERN, "").replace(/\s{2,}/g, " ").trim())
+    .map((line) =>
+      line
+        .replace(URL_PATTERN, "")
+        .replace(/\s{2,}/g, " ")
+        .trim()
+    )
     .filter((line) => line.length > 0)
 }
 
 type Block =
-  | { type: "header"; text: string }
-  | { type: "slide"; lines: string[] }
+  { type: "header"; text: string } | { type: "slide"; lines: string[] }
 
-export function formatLyrics(input: string, options: FormatOptions): FormatResult {
+export function formatLyrics(
+  input: string,
+  options: FormatOptions
+): FormatResult {
   const chunks = input
     .trim()
     .split(/\r?\n\s*\r?\n+/)
@@ -197,7 +209,10 @@ export function formatLyrics(input: string, options: FormatOptions): FormatResul
   }
 
   const sections = blocks
-    .filter((block): block is { type: "header"; text: string } => block.type === "header")
+    .filter(
+      (block): block is { type: "header"; text: string } =>
+        block.type === "header"
+    )
     .map((block) => block.text)
 
   const slideCount = blocks.filter((block) => block.type === "slide").length

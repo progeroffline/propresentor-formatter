@@ -1,5 +1,4 @@
-import { strings } from "@/i18n"
-
+import { useLocale } from "@/components/locale-provider"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,6 +29,8 @@ export function OutputPanel({
   sections: string[]
   onCopy: () => void
 }) {
+  const { strings } = useLocale()
+
   return (
     <Card className="flex min-h-0 flex-col">
       <CardHeader className="flex-row items-center justify-between">
@@ -59,7 +60,10 @@ export function OutputPanel({
 
       <CardContent className="flex min-h-0 flex-1 flex-col gap-3">
         {sections.length > 0 && (
-          <SectionBadges label={strings.output.sectionsLabel} sections={sections} />
+          <SectionBadges
+            label={strings.output.sectionsLabel}
+            sections={sections}
+          />
         )}
 
         <ScrollArea className="min-h-0 flex-1 rounded-2xl border bg-input/30">
