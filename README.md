@@ -128,7 +128,3 @@ Open the printed local URL, paste in some lyrics, and press `Ctrl+Enter`.
 ## Privacy
 
 There is no backend. Parsing, formatting, and preview rendering all happen locally in your browser — nothing you paste is ever sent anywhere.
-
-```
-
-```
