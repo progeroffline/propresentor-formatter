@@ -15,6 +15,18 @@ describe("Tag", () => {
     expect(formatLyrics("Teг:\nline 1", PLAIN).sections).toEqual(["Tag"])
   })
 
+  it("recognizes 'Post Chorus' (Ukrainian/Russian/English) as a Tag", () => {
+    expect(formatLyrics("Пост приспів\nline 1", PLAIN).sections).toEqual([
+      "Tag",
+    ])
+    expect(formatLyrics("Постприпев\nline 1", PLAIN).sections).toEqual([
+      "Tag",
+    ])
+    expect(formatLyrics("Post Chorus\nline 1", PLAIN).sections).toEqual([
+      "Tag",
+    ])
+  })
+
   it("collapses 'Chorus Tag'/'Bridge 1 Tag'/'Verse Coda' down to a plain Tag group", () => {
     expect(formatLyrics("Chorus Tag:\nline 1", PLAIN).sections).toEqual([
       "Tag",

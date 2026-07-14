@@ -15,42 +15,38 @@ export function formatLyrics(
   input: string,
   options: FormatOptions
 ): FormatResult {
-  const chunks = input
-    .trim()
-    .split(/\r?\n\s*\r?\n+/)
-    .map((chunk) => chunk.split(/\r?\n/).map((line) => line.trim()))
-    .filter((chunk) => chunk.some((line) => line.length > 0))
+  const lines = input
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
 
   const blocks: Block[] = []
 
-  for (const chunk of chunks) {
-    const [firstLine, ...rest] = chunk
-    const header = matchGroupHeader(firstLine)
-    const slideLines = (header ? rest : chunk).filter((line) => line.length > 0)
-
+  // A section header is recognized on any line, not just the first line
+  // after a blank-line gap — some pasted lyrics (e.g. from lyric sites)
+  // have no blank lines at all between sections, only the header words
+  // themselves marking where one section ends and the next begins.
+  for (const rawLine of lines) {
+    const header = matchGroupHeader(rawLine)
     if (header) {
       blocks.push({ type: "header", text: header })
+      continue
     }
 
-    if (slideLines.length > 0) {
-      let lines = slideLines
-      if (options.removeLinks) {
-        lines = stripLinks(lines)
-      }
-      if (options.removePunctuation) {
-        lines = stripPunctuation(lines)
-      }
-
-      // Each lyric line becomes its own slide, so a multi-line chunk (a
-      // verse/chorus with several lines under one header) turns into that
-      // many separate blocks rather than one slide with several lines.
-      for (let line of lines) {
-        if (options.capitalizeSlides) {
-          ;[line] = capitalizeSlideText([line])
-        }
-        blocks.push({ type: "slide", lines: [line] })
-      }
+    let slideLines = [rawLine]
+    if (options.removeLinks) {
+      slideLines = stripLinks(slideLines)
     }
+    if (options.removePunctuation) {
+      slideLines = stripPunctuation(slideLines)
+    }
+    if (slideLines.length === 0) {
+      continue
+    }
+    if (options.capitalizeSlides) {
+      slideLines = capitalizeSlideText(slideLines)
+    }
+    blocks.push({ type: "slide", lines: slideLines })
   }
 
   // A leading, unlabeled slide (typically the song name and author) gets a

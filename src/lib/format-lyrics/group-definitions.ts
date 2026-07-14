@@ -9,7 +9,7 @@ interface GroupDefinition {
 const GROUP_DEFINITIONS: GroupDefinition[] = [
   { canonical: "Verse", aliases: ["verse", "куплет"] },
   { canonical: "Chorus", aliases: ["chorus", "припев", "приспів"] },
-  { canonical: "Bridge", aliases: ["bridge", "бридж", "брідж"] },
+  { canonical: "Bridge", aliases: ["bridge", "бридж", "брідж", "мост"] },
   {
     canonical: "PreChorus",
     aliases: [
@@ -20,11 +20,27 @@ const GROUP_DEFINITIONS: GroupDefinition[] = [
       "запев",
       "заспів",
       "перед приспів",
+      "вставка",
     ],
   },
   // "teг" mixes a Latin "T"/"e" with a Cyrillic "г" — a common artifact of
   // copying lyrics from mixed-keyboard-layout sources.
-  { canonical: "Tag", aliases: ["tag", "тег", "teг", "coda", "кода"] },
+  {
+    canonical: "Tag",
+    aliases: [
+      "tag",
+      "тег",
+      "teг",
+      "coda",
+      "кода",
+      // Post-chorus: a short repeated phrase after the chorus — treated as
+      // a Tag rather than its own group, same reasoning as Coda.
+      "post chorus",
+      "postchorus",
+      "постприпев",
+      "пост приспів",
+    ],
+  },
   { canonical: "Intro", aliases: ["intro", "интро", "інтро"] },
   { canonical: "Ending", aliases: ["ending", "концовка", "кінцівка"] },
   { canonical: "Outro", aliases: ["outro", "аутро"] },

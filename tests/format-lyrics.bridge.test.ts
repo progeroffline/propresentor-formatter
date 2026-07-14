@@ -12,6 +12,16 @@ describe("Bridge", () => {
     expect(formatLyrics("Брідж\nline 1", PLAIN).sections).toEqual(["Bridge"])
   })
 
+  it("recognizes the Russian 'Мост' alias, with and without a number", () => {
+    expect(formatLyrics("Мост\nline 1", PLAIN).sections).toEqual(["Bridge"])
+    expect(formatLyrics("Мост 1\nline 1", PLAIN).sections).toEqual([
+      "Bridge 1",
+    ])
+    expect(formatLyrics("Мост 2\nline 1", PLAIN).sections).toEqual([
+      "Bridge 2",
+    ])
+  })
+
   it("strips a trailing period", () => {
     expect(formatLyrics("Бридж.\nline 1", PLAIN).sections).toEqual([
       "Bridge",

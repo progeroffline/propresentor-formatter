@@ -40,6 +40,19 @@ describe("regression: section numbering formats", () => {
   })
 })
 
+describe("regression: headers without a blank-line gap", () => {
+  it("recognizes a header on its own line even with no blank line before or after it", () => {
+    const result = formatLyrics(
+      "Куплет\nline v1\nПриспів 1\nline c1\nПриспів 2\nline c2",
+      PLAIN
+    )
+    expect(result.sections).toEqual(["Verse", "Chorus 1", "Chorus 2"])
+    expect(result.output).toBe(
+      "[Verse]\nline v1\n\n[Chorus 1]\nline c1\n\n[Chorus 2]\nline c2"
+    )
+  })
+})
+
 describe("regression: punctuation-only lines don't leave stray blank lines", () => {
   it("drops a line that becomes empty after removing punctuation", () => {
     const result = formatLyrics("Verse\nHello!!!\nworld", {
