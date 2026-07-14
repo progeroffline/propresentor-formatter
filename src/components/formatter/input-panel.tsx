@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Kbd } from "@/components/ui/kbd"
 import { Textarea } from "@/components/ui/textarea"
 import {
   Tooltip,
@@ -29,7 +28,7 @@ export function InputPanel({
   const { strings } = useLocale()
 
   return (
-    <Card className="flex min-h-0 flex-col">
+    <Card className="flex flex-col lg:min-h-0">
       <CardHeader className="flex-row items-center justify-between">
         <CardTitle>{strings.input.title}</CardTitle>
         <CardAction className="flex items-center gap-2">
@@ -52,21 +51,17 @@ export function InputPanel({
                 </Button>
               }
             />
-            <TooltipContent>
-              {strings.input.formatTooltip}
-              <Kbd>Ctrl</Kbd>
-              <Kbd>Enter</Kbd>
-            </TooltipContent>
+            <TooltipContent>{strings.input.formatTooltip}</TooltipContent>
           </Tooltip>
         </CardAction>
       </CardHeader>
 
-      <CardContent className="min-h-0 flex-1">
+      <CardContent className="lg:min-h-0 lg:flex-1">
         <Textarea
           value={value}
           onChange={(event) => onValueChange(event.target.value)}
           placeholder={strings.input.placeholder}
-          className="field-sizing-fixed h-full overflow-y-auto font-mono"
+          className="font-mono lg:field-sizing-fixed lg:h-full lg:overflow-y-auto"
         />
       </CardContent>
     </Card>

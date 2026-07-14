@@ -43,38 +43,6 @@ export function useLyricsFormatter() {
     )
   }, [formatResult.output, strings])
 
-  // Kept in refs so the listener is registered once per mount instead of on
-  // every keystroke (format/copy's identity changes with inputText/options).
-  const formatRef = React.useRef(format)
-  const copyRef = React.useRef(copy)
-
-  React.useEffect(() => {
-    formatRef.current = format
-    copyRef.current = copy
-  }, [format, copy])
-
-  React.useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (!event.ctrlKey && !event.metaKey) {
-        return
-      }
-
-      if (event.key === "Enter") {
-        event.preventDefault()
-        formatRef.current()
-        return
-      }
-
-      if (event.shiftKey && event.key.toLowerCase() === "c") {
-        event.preventDefault()
-        copyRef.current()
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
-
   return {
     inputText,
     setInputText,

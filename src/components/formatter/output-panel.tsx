@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Kbd } from "@/components/ui/kbd"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Tooltip,
@@ -36,7 +35,7 @@ export function OutputPanel({
   const { resolvedTheme } = useTheme()
 
   return (
-    <Card className="flex min-h-0 flex-col">
+    <Card className="flex flex-col lg:min-h-0">
       <CardHeader className="flex-row items-center justify-between">
         <CardTitle>{strings.output.title}</CardTitle>
         <CardAction className="flex items-center gap-2">
@@ -52,17 +51,12 @@ export function OutputPanel({
                 </Button>
               }
             />
-            <TooltipContent>
-              {strings.output.copyTooltip}
-              <Kbd>Ctrl</Kbd>
-              <Kbd>Shift</Kbd>
-              <Kbd>C</Kbd>
-            </TooltipContent>
+            <TooltipContent>{strings.output.copyTooltip}</TooltipContent>
           </Tooltip>
         </CardAction>
       </CardHeader>
 
-      <CardContent className="flex min-h-0 flex-1 flex-col gap-3">
+      <CardContent className="flex flex-col gap-3 lg:min-h-0 lg:flex-1">
         {sections.length > 0 && (
           <SectionBadges
             label={strings.output.sectionsLabel}
@@ -70,7 +64,7 @@ export function OutputPanel({
           />
         )}
 
-        <ScrollArea className="min-h-0 flex-1 rounded-2xl border bg-input/30">
+        <ScrollArea className="rounded-2xl border bg-input/30 lg:min-h-0 lg:flex-1">
           {slides.length > 0 ? (
             <div className="flex flex-col gap-3 p-4">
               {slides.map((slide, index) => {
