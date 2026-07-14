@@ -33,6 +33,7 @@ describe("Interlude", () => {
       output: "[Interlude]",
       slideCount: 0,
       sections: ["Interlude"],
+      slides: [],
     })
   })
 

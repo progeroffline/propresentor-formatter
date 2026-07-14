@@ -31,7 +31,7 @@ export function App() {
             onFormat={formatter.format}
           />
           <OutputPanel
-            value={formatter.outputText}
+            slides={formatter.slides}
             slideCount={formatter.slideCount}
             sections={formatter.sections}
             onCopy={formatter.copy}

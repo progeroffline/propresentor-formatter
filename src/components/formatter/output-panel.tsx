@@ -15,16 +15,17 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import type { FormatSlide } from "@/lib/format-lyrics"
 
 import { SectionBadges } from "./section-badges"
 
 export function OutputPanel({
-  value,
+  slides,
   slideCount,
   sections,
   onCopy,
 }: {
-  value: string
+  slides: FormatSlide[]
   slideCount: number
   sections: string[]
   onCopy: () => void
@@ -67,15 +68,35 @@ export function OutputPanel({
         )}
 
         <ScrollArea className="min-h-0 flex-1 rounded-2xl border bg-input/30">
-          <pre
-            className={
-              value
-                ? "p-4 font-mono text-sm whitespace-pre-wrap"
-                : "p-4 font-mono text-sm whitespace-pre-wrap text-muted-foreground"
-            }
-          >
-            {value || strings.output.emptyState}
-          </pre>
+          {slides.length > 0 ? (
+            <div className="flex flex-col gap-3 p-4">
+              {slides.map((slide, index) => (
+                <div
+                  key={index}
+                  className="flex w-full flex-col gap-2 rounded-xl border bg-card p-4 shadow-sm ring-1 ring-foreground/5 dark:ring-foreground/10"
+                >
+                  {slide.header && (
+                    <Badge variant="secondary" className="w-fit font-mono">
+                      {slide.header}
+                    </Badge>
+                  )}
+                  {slide.isTitle ? (
+                    <p className="text-center font-heading text-lg font-semibold whitespace-pre-wrap">
+                      {slide.lines.join("\n")}
+                    </p>
+                  ) : (
+                    <pre className="font-mono text-sm whitespace-pre-wrap">
+                      {slide.lines.join("\n")}
+                    </pre>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="p-4 font-mono text-sm text-muted-foreground">
+              {strings.output.emptyState}
+            </p>
+          )}
         </ScrollArea>
       </CardContent>
     </Card>

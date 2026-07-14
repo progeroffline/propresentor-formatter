@@ -4,7 +4,12 @@ import { toast } from "sonner"
 import { useLocale } from "@/components/locale-provider"
 import { formatLyrics, type FormatResult } from "@/lib/format-lyrics"
 
-const EMPTY_RESULT: FormatResult = { output: "", sections: [], slideCount: 0 }
+const EMPTY_RESULT: FormatResult = {
+  output: "",
+  sections: [],
+  slideCount: 0,
+  slides: [],
+}
 
 export function useLyricsFormatter() {
   const { strings } = useLocale()
@@ -82,6 +87,7 @@ export function useLyricsFormatter() {
     outputText: formatResult.output,
     sections: formatResult.sections,
     slideCount: formatResult.slideCount,
+    slides: formatResult.slides,
     format,
     clear,
     copy,

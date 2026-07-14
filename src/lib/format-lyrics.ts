@@ -4,10 +4,17 @@ export interface FormatOptions {
   removeLinks: boolean
 }
 
+export interface FormatSlide {
+  header: string | null
+  lines: string[]
+  isTitle: boolean
+}
+
 export interface FormatResult {
   output: string
   slideCount: number
   sections: string[]
+  slides: FormatSlide[]
 }
 
 interface GroupDefinition {
@@ -315,7 +322,32 @@ export function formatLyrics(
   // sections later on — otherwise there's nothing to set it apart from.
   const firstBlock = blocks[0]
   const hasAnyHeader = blocks.some((block) => block.type === "header")
-  if (firstBlock && firstBlock.type === "slide" && hasAnyHeader) {
+  const isTitleSlide =
+    firstBlock !== undefined &&
+    firstBlock.type === "slide" &&
+    hasAnyHeader
+
+  // The structured slides used for display are captured before the
+  // "Title: " prefix is baked into the block below, so the UI can style
+  // the title slide distinctly without showing that ProPresenter marker;
+  // the plain-text `output` (used for copy/paste into ProPresenter) still
+  // gets the prefix via the blocks mutation further down.
+  const slides: FormatSlide[] = []
+  let pendingHeader: string | null = null
+  for (const block of blocks) {
+    if (block.type === "header") {
+      pendingHeader = block.text
+      continue
+    }
+    slides.push({
+      header: pendingHeader,
+      lines: block.lines,
+      isTitle: isTitleSlide && block === firstBlock,
+    })
+    pendingHeader = null
+  }
+
+  if (isTitleSlide && firstBlock.type === "slide") {
     const [firstLine, ...rest] = firstBlock.lines
     firstBlock.lines = [`Title: ${firstLine}`, ...rest]
   }
@@ -351,5 +383,6 @@ export function formatLyrics(
     output: outputParts.join("\n"),
     slideCount,
     sections,
+    slides,
   }
 }
