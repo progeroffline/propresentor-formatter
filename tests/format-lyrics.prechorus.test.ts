@@ -34,6 +34,12 @@ describe("PreChorus", () => {
     ])
   })
 
+  it("recognizes the Russian 'Вставка' alias", () => {
+    expect(formatLyrics("Вставка\nline 1", PLAIN).sections).toEqual([
+      "PreChorus",
+    ])
+  })
+
   it("accepts a number before the name", () => {
     expect(formatLyrics("1 Перед Приспів\nline 1", PLAIN).sections).toEqual([
       "PreChorus 1",

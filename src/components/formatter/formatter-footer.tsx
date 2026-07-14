@@ -5,8 +5,6 @@ export function FormatterFooter() {
 
   return (
     <footer className="flex flex-wrap items-center justify-between gap-3 border-t px-4 py-3 text-sm text-muted-foreground sm:px-6">
-      <span>{strings.footer.status}</span>
-
       <span>
         {strings.footer.contactText}{" "}
         <a
