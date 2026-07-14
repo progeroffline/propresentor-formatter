@@ -12,7 +12,7 @@ export function App() {
 
   return (
     <TooltipProvider>
-      <div className="flex min-h-svh flex-col bg-background">
+      <div className="flex h-svh flex-col overflow-hidden bg-background">
         <FormatterHeader />
         <OptionsBar
           capitalizeSlides={formatter.capitalizeSlides}
@@ -23,7 +23,7 @@ export function App() {
           onRemoveLinksChange={formatter.setRemoveLinks}
         />
 
-        <main className="grid flex-1 grid-cols-1 gap-4 overflow-hidden p-4 sm:px-6 lg:grid-cols-2">
+        <main className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-hidden p-4 sm:px-6 lg:grid-cols-2">
           <InputPanel
             value={formatter.inputText}
             onValueChange={formatter.setInputText}

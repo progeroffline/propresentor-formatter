@@ -66,7 +66,7 @@ export function InputPanel({
           value={value}
           onChange={(event) => onValueChange(event.target.value)}
           placeholder={strings.input.placeholder}
-          className="h-full font-mono"
+          className="field-sizing-fixed h-full overflow-y-auto font-mono"
         />
       </CardContent>
     </Card>
