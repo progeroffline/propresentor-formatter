@@ -21,22 +21,38 @@ interface GroupDefinition {
 const GROUP_DEFINITIONS: GroupDefinition[] = [
   { canonical: "Verse", aliases: ["verse", "куплет"] },
   { canonical: "Chorus", aliases: ["chorus", "припев", "приспів"] },
-  { canonical: "Bridge", aliases: ["bridge", "бридж"] },
+  { canonical: "Bridge", aliases: ["bridge", "бридж", "брідж"] },
   {
     canonical: "PreChorus",
-    aliases: ["prechorus", "pre chorus", "предприпев", "пред припев"],
+    aliases: [
+      "prechorus",
+      "pre chorus",
+      "предприпев",
+      "пред припев",
+      "запев",
+      "заспів",
+      "перед приспів",
+    ],
   },
-  { canonical: "Tag", aliases: ["tag", "тег", "coda", "кода", "заспів"] },
+  // "teг" mixes a Latin "T"/"e" with a Cyrillic "г" — a common artifact of
+  // copying lyrics from mixed-keyboard-layout sources.
+  { canonical: "Tag", aliases: ["tag", "тег", "teг", "coda", "кода"] },
   { canonical: "Intro", aliases: ["intro", "интро", "інтро"] },
-  { canonical: "Ending", aliases: ["ending", "концовка"] },
+  { canonical: "Ending", aliases: ["ending", "концовка", "кінцівка"] },
   { canonical: "Outro", aliases: ["outro", "аутро"] },
   {
     canonical: "Interlude",
-    aliases: ["interlude", "проигрыш", "instrumental", "инструментал"],
+    aliases: [
+      "interlude",
+      "проигрыш",
+      "програш",
+      "instrumental",
+      "инструментал",
+    ],
   },
   { canonical: "Vamp", aliases: ["vamp", "вамп"] },
-  { canonical: "Turnaround", aliases: ["turnaround", "переход"] },
-  { canonical: "Blank", aliases: ["blank", "пусто"] },
+  { canonical: "Turnaround", aliases: ["turnaround", "переход", "перехід"] },
+  { canonical: "Blank", aliases: ["blank", "пусто", "порожньо"] },
 ]
 
 const STEM_TO_CANONICAL = new Map<string, string>()
